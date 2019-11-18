@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset='utf-8'>
     <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
   </head>
   <body>
@@ -16,7 +17,12 @@
 
     <footer>
       {{ block "footer" . }}
-        {{ .Site.Params.copyright }}
+        <nav class='social'>
+          {{ range $k, $v := .Site.Params.social }}
+            <a href='{{ $v }}'><img src='/images/{{ $k }}.png' /></a>
+          {{ end }}
+        </nav>
+        <div class='copyright'>&copy; {{ .Site.Params.copyright }}</div>
       {{ end }}
     </footer>
   </body>
