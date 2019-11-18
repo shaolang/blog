@@ -1,0 +1,5 @@
+<h3>/ <a href='/'>{{ .Site.Title }}</a>
+  {{ if ne .Page.Dir "" }}
+    / <a href='../'>{{ .Page.Dir | replaceRE "\\\\|/" "" }}</a>
+  {{ end }}
+</a></h3>

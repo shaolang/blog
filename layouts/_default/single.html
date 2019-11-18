@@ -1,9 +1,11 @@
 {{ define "header" }}
-  <h3>/ <a href='/'>{{ .Site.Title }}</a></h3>
-  <h1>{{ .Title }}</h1>
+  {{ partial "header/site-header.html" . }}
 {{ end }}
 
 
 {{ define "main" }}
-  {{ .Content }}
+  <h1>{{ .Title }}</h1>
+  <article>
+    {{ .Content }}
+  </article>
 {{ end }}
