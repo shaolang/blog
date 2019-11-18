@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+  </head>
+  <body>
+    <header>
+      {{ block "header" .}}
+        <h1>{{ .Site.Title }}</h1>
+        <h2>{{ .Site.Params.description }}</h2>
+      {{ end }}
+    </header>
+
+    <main>
+      {{ block "main" . }}
+      {{ end }}
+    </main>
+
+    <footer>
+      {{ block "footer" . }}
+        {{ .Site.Params.copyright }}
+      {{ end }}
+    </footer>
+  </body>
+</html>
