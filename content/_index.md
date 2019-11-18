@@ -1,3 +1,3 @@
-[blog](./blog)
+[posts](./posts)
 
 [about](./about)
