@@ -1,3 +1,2 @@
-[posts](./posts)
-
-[about](./about)
+* [posts](./posts)
+* [about](./about)

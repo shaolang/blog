@@ -1,6 +1,5 @@
 ---
 title: "About"
-date: 2019-11-18T16:02:51+08:00
 ---
 
 I like learning things, especially in how things work. My current

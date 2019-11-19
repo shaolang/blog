@@ -5,8 +5,8 @@
 
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
-  {{ if ne .PublishDate ""}}
-    {{ .PublishDate.Format "January 2, 2006" }}
+  {{ if .PublishDate }}
+    {{ .PublishDate.Format "Jan 2, 2006" }}
   {{ end }}
   <article>
     {{ .Content }}

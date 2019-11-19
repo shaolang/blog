@@ -1,8 +1,10 @@
 {{ define "header" }}
-  <h1>{{ .Site.Title }}</h1>
-  <h2>{{ .Site.Params.description }}</h2>
+  <h1 class='home'>{{ .Site.Title }}</h1>
+  <h2 class='home'>{{ .Site.Params.description }}</h2>
 {{ end }}
 
 {{ define "main" }}
-  {{ .Content }}
+  <div class='home'>
+    {{ .Content }}
+  </div>
 {{ end }}
