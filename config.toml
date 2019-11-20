@@ -1,6 +1,7 @@
 baseURL = "https://shaolang.github.io/"
 languageCode = "en-us"
 title = "Bit by bit"
+ignoreFiles = [ "\\.swp$" ]
 
 [params]
 description = "Biz analyst by day, coder by night, ML practitioner in the making"
