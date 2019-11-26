@@ -54,7 +54,7 @@ several ways:
    gene in the offspring has a 50/50 chance of coming from either parents.
 2. Single-point crossover: a common point on both parents is picked randomly
    and the offspring will inherit the first parent's genes up till that point
-   and the second's genes from that point onwards as its genes, e.g., if
+   and the second's genes from that point onward as its genes, e.g., if
    the chromosome length is 10, and the common point randomly chosen is 7,
    the offspring will inherit the first 7 genes from the first parent
    and the last 3 genes from the second.
@@ -99,7 +99,7 @@ numbers between 0s and 1s.
 
 Based on the chromosome, the genetic algorithm will calculate the fitness
 of the individual, usually normalized to values between 0 and 1.
-The higher the fittness score, the better the individual
+The higher the fitness score, the better the individual
 is/the closer the program is to solving the problem. Survival of the fittest,
 if you'd like.[^1]
 
@@ -196,7 +196,7 @@ instance:
 `mutate` is given the mutation rate, and it simply run through the entire
 chromosome and flip bit the gene when `mutation_rate > rand`.
 
-`<=>` overrides the comparison to allow sorting fitnesses in descending order.
+`<=>` overrides the comparison to allow sorting fitness in descending order.
 
 {{< highlight ruby "linenos=table, linenostart=47" >}}
 class Population
@@ -321,7 +321,7 @@ The main program ties both `Population` and `Individual` up by implementing
 the pseudocode as outlined in [Building blocks](#building-blocks) (except
 the addition of outputting the current fittest in the loop, and the
 fittest at the end of the program). With the given values to
-`mutation_rate`, `crossover_rate` and `elisitm_count`, the program should
+`mutation_rate`, `crossover_rate` and `elitism_count`, the program should
 arrive at the solution within 400 to 600 generations most of the time.
 
 # Real-world example: Class scheduling
@@ -762,17 +762,17 @@ one useful tool for solving optimization problems.
       most intelligent, but the one most adaptable to change" did not originate
       from Charles Darwin. A Louisiana State University business professor,
       Leon C. Megginson, [first used that phrase][strongest]--his idiosyncratic
-      interpretion on Darwin's _On the Origin of Species_--at a convention
+      interpretation on Darwin's _On the Origin of Species_--at a convention
       in 1963.
 [^2]: Because the overly verbose Java syntax masks the otherwise simple
-      concepts of genetic algorithm. Other than the differenece in language
+      concepts of genetic algorithm. Other than the difference in language
       choice, the following also reorganizes the code to make it more
       cohesive and simpler to understand (the book's insistence in create a
       specific `GeneticAlgorithm` class hurts cohesiveness big time).
 [^3]: Adaptive genetic algorithm tunes various parameters (mutation rate,
       crossover rate, etc) based on the state of the algorithm, e.g., it
       increases the mutation rate to encourage increasing the gene pool
-      divserity when it detects very little difference between the individuals.
+      diversity when it detects very little difference between the individuals.
 
 [ga]: https://en.wikipedia.org/wiki/Genetic_algorithm
 [gp]: https://en.wikipedia.org/wiki/Genetic_programming
