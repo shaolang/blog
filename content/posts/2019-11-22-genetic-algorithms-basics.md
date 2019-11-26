@@ -1,7 +1,6 @@
 ---
 title: "Genetic Algorithms Basics"
 date: 2019-11-26T10:00:00+08:00
-draft: true
 ---
 
 [Genetic algorithm][ga] is another branch of artificial intelligence
