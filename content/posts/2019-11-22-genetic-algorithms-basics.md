@@ -80,7 +80,7 @@ several ways:
    e.g., if genes 1, 3, and 5 from an individual (ID1) are to be mutated,
    uniform mutation will take genes from 1, 3, and 5 from the newly created
    individual and substitute them at genes 1, 3, and 5 of the mutated ID1;
-   it feels a little uniform crossover, except that the offspring will
+   it feels a little like uniform crossover, except that the offspring will
    take genes from the randomly-created individual when `mutation_rate > rand`
 
 
@@ -106,8 +106,8 @@ if you'd like.[^1]
 ## Selection
 [Selection][selection] is the process of choosing individuals from the
 population for crossover. Although elites are favored, they shouldn't be
-the only ones make available; sometimes, genes of two seemingly weak
-individuals can create surprisingly fit offsprings.
+the only ones made available for crossover; sometimes, genes of two seemingly
+weak individuals can create surprisingly fit offsprings.
 
 Selection can be implemented in one of the following ways:
 
