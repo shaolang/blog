@@ -663,34 +663,34 @@ The main program is largely the same, except the introduction of
 `tournament_size` that is used in selecting parents for crossovers. The
 following shows one possibility of the schedule (reformatted for the web):
 
-Student Group | Timeslot          | Module          | Room | Professor
-:------------:|:-----------------:|:---------------:|------|----------
-1             | Fri 09:00 - 11:00 |Maths            |Room B1|Dr R Williams
-1             | Mon 13:00 - 15:00 |Physics          |Room D1|Mrs E Mitchell
-1             | Tue 09:00 - 11:00 |Computer Science |Room D1|Dr P Smith
-2             | Fri 09:00 - 11:00 |History          |Room B1|Mr A Thompson
-2             | Mon 11:00 - 13:00 |English          |Room B1|Mr A Thompson
-2             | Mon 13:00 - 15:00 |Drama            |Room B1|Mr A Thompson
-2             | Wed 11:00 - 13:00 |Maths            |Room B1|Dr P Smith
-3             | Mon 13:00 - 15:00 |History          |Room D1|Mr A Thompson
-3             | Tue 13:00 - 15:00 |Maths            |Room B1|Dr P Smith
-3             | Wed 09:00 - 11:00 |Physics          |Room D1|Dr P Smith
-4             | Tue 13:00 - 15:00 |Computer Science |Room B1|Dr P Smith
-4             | Wed 09:00 - 11:00 |Physics          |Room F1|Dr P Smith
-5             | Thu 11:00 - 13:00 |History          |Room D1|Mr A Thompson
-5             | Thu 11:00 - 13:00 |Maths            |Room B1|Dr P Smith
-5             | Wed 11:00 - 13:00 |English          |Room D1|Mr A Thompson
-6             | Thu 11:00 - 13:00 |Computer Science |Room B1|Mrs E Mitchell
-6             | Tue 09:00 - 11:00 |History          |Room F1|Mr A Thompson
-6             | Tue 09:00 - 11:00 |Physics          |Room B1|Mrs E Mitchell
-7             | Fri 13:00 - 15:00 |Maths            |Room D1|Dr P Smith
-7             | Tue 09:00 - 11:00 |Computer Science |Room D1|Dr P Smith
-8             | Thu 13:00 - 15:00 |English          |Room F1|Mr A Thompson
-8             | Tue 09:00 - 11:00 |Drama            |Room D1|Mr A Thompson
-9             | Mon 13:00 - 15:00 |Drama            |Room B1|Mr A Thompson
-9             | Tue 13:00 - 15:00 |Computer Science |Room F1|Mrs E Mitchell
-10            | Fri 09:00 - 11:00 |Maths            |Room F1|Dr R Williams
-10            | Thu 09:00 - 11:00 |Physics          |Room B1|Mrs E Mitchell
+```
+ 1, Fri 09:00 - 11:00, Maths,            Room B1, Dr R Williams
+ 1, Mon 13:00 - 15:00, Physics,          Room D1, Mrs E Mitchell
+ 1, Tue 09:00 - 11:00, Computer Science, Room D1, Dr P Smith
+ 2, Fri 09:00 - 11:00, History,          Room B1, Mr A Thompson
+ 2, Mon 11:00 - 13:00, English,          Room B1, Mr A Thompson
+ 2, Mon 13:00 - 15:00, Drama,            Room B1, Mr A Thompson
+ 2, Wed 11:00 - 13:00, Maths,            Room B1, Dr P Smith
+ 3, Mon 13:00 - 15:00, History,          Room D1, Mr A Thompson
+ 3, Tue 13:00 - 15:00, Maths,            Room B1, Dr P Smith
+ 3, Wed 09:00 - 11:00, Physics,          Room D1, Dr P Smith
+ 4, Tue 13:00 - 15:00, Computer Science, Room B1, Dr P Smith
+ 4, Wed 09:00 - 11:00, Physics,          Room F1, Dr P Smith
+ 5, Thu 11:00 - 13:00, History,          Room D1, Mr A Thompson
+ 5, Thu 11:00 - 13:00, Maths,            Room B1, Dr P Smith
+ 5, Wed 11:00 - 13:00, English,          Room D1, Mr A Thompson
+ 6, Thu 11:00 - 13:00, Computer Science, Room B1, Mrs E Mitchell
+ 6, Tue 09:00 - 11:00, History,          Room F1, Mr A Thompson
+ 6, Tue 09:00 - 11:00, Physics,          Room B1, Mrs E Mitchell
+ 7, Fri 13:00 - 15:00, Maths,            Room D1, Dr P Smith
+ 7, Tue 09:00 - 11:00, Computer Science, Room D1, Dr P Smith
+ 8, Thu 13:00 - 15:00, English,          Room F1, Mr A Thompson
+ 8, Tue 09:00 - 11:00, Drama,            Room D1, Mr A Thompson
+ 9, Mon 13:00 - 15:00, Drama,            Room B1, Mr A Thompson
+ 9, Tue 13:00 - 15:00, Computer Science, Room F1, Mrs E Mitchell
+10, Fri 09:00 - 11:00, Maths,            Room F1, Dr R Williams
+10, Thu 09:00 - 11:00, Physics,          Room B1, Mrs E Mitchell
+```
 
 As mentioned, soft criteria are not accounted for by this algorithm, but
 implementing requires a slight change in calculating the individual's
@@ -747,7 +747,7 @@ end
 # Closing thoughts
 Genetic algorithms aren't that difficult, considering that the class
 schedule example has only 255 LOC. Adding optimizations such as
-fitness calculation [memoization][memoization], [adaptive algorithms][^3]
+fitness calculation [memoization][memoization], adaptive algorithms[^3]
 will probably add another 10 - 100 LOC, but even so, it's doing so much
 with so little code.
 
