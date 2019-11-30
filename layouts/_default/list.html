@@ -4,9 +4,12 @@
 
 
 {{ define "main" }}
+  {{ if .Content }}{{ .Content }}{{ end }}
   <ul class='list'>{{ range .Pages }}
     <li><a href='{{ .Permalink }}'>{{ .Title }}</a>
+      {{ if .PublishDate }}
       <span class='date'>{{ .PublishDate.Format "Jan 2, 2006" }}</span>
+      {{ end }}
     </li>
   {{ end }}</ul>
 {{ end }}
