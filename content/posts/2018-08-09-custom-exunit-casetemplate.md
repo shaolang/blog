@@ -41,14 +41,15 @@ defmodule My.MixProject do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(\_),     do: ["lib"]
 end
 {{</ highlight >}}
 
-[`:elixirc_paths` defaults to `["lib"]`][elixirc-paths-default], hence, the need
+[`:elixirc_paths` defaults to `"lib"`][elixirc-paths-default], hence, the need
 to make changes similar to the highlighted lines to make custom cases work.
 
 
 [^1]: The custom case module must end with a `.ex` extension, not `.exs`.
+
 [case-template-doc]: https://hexdocs.pm/ex_unit/ExUnit.CaseTemplate.html#content
 [elixirc-paths-default]: https://hexdocs.pm/mix/Mix.Tasks.Compile.Elixir.html#module-configuration

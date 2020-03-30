@@ -1,6 +1,6 @@
 ---
 title: "Getting Started With Apache Camel"
-date: 2020-03-23T13:06:37+08:00
+date: 2020-03-31T13:06:37+08:00
 draft: true
 ---
 
@@ -76,7 +76,7 @@ is the entry point and the latter the exit point. Endpoints are encoded
 in URIs in the form of `<scheme>:<context path>?<options>`. Both of our
 endpoints don't specify any options. The schema and context path for
 `direct:greet` are `direct` and `greet` respectively; Direct Component's
-documentation states that all such components uses `direct` as its schema.
+documentation states that all such components use `direct` as its schema.
 However, its context path can be any string without blank spaces in-between.
 
 Unlike `direct:greeet`, `stream:out` is stricter: Stream Component's schema
@@ -138,7 +138,7 @@ And as expected, it prints `Hello, Shaolang` to standard output.
 prefix the given string with `Hello, `. Camel has many useful data
 transformation components, such as transforming CSV to XML (data format
 transformation), and `java.lang.String` to `javax.jms.TextMessage` (data
-type transformation). Such transformation processors implements the Message
+type transformation). Such transformation processors implement the Message
 Translator enterprise integration pattern.
 
 [ei]: https://en.wikipedia.org/wiki/Enterprise_integration
