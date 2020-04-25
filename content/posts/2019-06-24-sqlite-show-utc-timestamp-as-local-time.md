@@ -40,4 +40,5 @@ _The above employs [common table expressions][cte] for clarity; the actual
 combined them as one instead._
 
 [^1]: Okay, to be fair, SQLite employs what it terms as [type affinity](https://sqlite.org/datatype3.html#type_affinity)
+
 [cte]: https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression
