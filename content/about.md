@@ -6,7 +6,8 @@ I like learning things, especially in how things work. My current
 weapons-of-choice are [Clojure][clojure], [JavaScript][javascript],
 [Python][python], and [Ruby][ruby] (in alphabetical order). On the
 language front, I'm learning [Elixir][elixir], [Erlang][erlang],
-[Haskell][haskell], and [Rust][rust]; on the application front,
+[Haskell][haskell], [Kotlin][kotlin] and [Rust][rust];
+on the application front,
 I'm learning [pandas][pandas], [scikit-learn][scikit-learn], and
 [Tensorflow][tensorflow]. Why? 'cos curiosity and fascination.
 
@@ -20,6 +21,7 @@ even if the audience is only myself.
 [elixir]: https://elixir-lang.org
 [erlang]: https://www.erlang.org
 [haskell]: https://www.haskell.org
+[kotlin]: https://kotlinlang.org
 [rust]: https://www.rust-lang.org/en-US
 [pandas]: https://pandas.pydata.org
 [scikit-learn]: http://scikit-learn.org/stable
