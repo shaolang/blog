@@ -83,10 +83,11 @@ table td, table th {
 
 .home li, .list li {
   list-style: none;
+  margin-bottom: 0.75rem;
 }
 
 .home a, .list a {
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 
