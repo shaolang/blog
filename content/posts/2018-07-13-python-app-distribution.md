@@ -1,6 +1,7 @@
 ---
 title: "Python Code Structure and Distribution"
 date: 2018-07-13T23:30:15+08:00
+allowComments: true
 tags: [python]
 ---
 

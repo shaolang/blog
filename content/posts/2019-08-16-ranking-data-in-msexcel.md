@@ -1,6 +1,7 @@
 ---
 title: Ranking Data in MSExcel
 date: 2019-08-16T21:25:48+08:00
+allowComments: true
 ---
 
 MSExcel, despite its [bad name] for

@@ -1,6 +1,7 @@
 ---
 title: "Getting Started With Apache Camel"
 date: 2020-03-31T13:06:37+08:00
+allowComments: true
 draft: true
 ---
 

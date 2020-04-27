@@ -1,6 +1,7 @@
 ---
 title: "Getting Started With Chronicle Queue"
 date: 2020-04-26T16:30:00+08:00
+allowComments: true
 ---
 
 [Chronicle Queue][cq] is low-latency, broker-less, durable message queue.

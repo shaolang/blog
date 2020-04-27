@@ -1,6 +1,7 @@
 ---
 title: "Custom ExUnit.CaseTemplate"
 date: 2018-08-09T08:57:56+08:00
+allowComments: true
 tags: [elixir]
 ---
 

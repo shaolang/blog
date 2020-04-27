@@ -12,3 +12,16 @@
     {{ .Content }}
   </article>
 {{ end }}
+
+{{ define "comments" }}{{ if .Params.allowComments }}
+<section id='comments'>
+  <script src="https://utteranc.es/client.js"
+          repo="shaolang/shaolang.github.io"
+          issue-term="pathname"
+          label="blogcomment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+</section>
+{{ end }}{{ end }}

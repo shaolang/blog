@@ -1,6 +1,7 @@
 ---
 title: "SQLite: show UTC timestamp as local time"
 date: 2019-06-24T21:12:03+08:00
+allowComments: true
 tags: [sqlite3]
 ---
 
