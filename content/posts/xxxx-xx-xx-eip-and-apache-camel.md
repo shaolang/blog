@@ -1,149 +1,52 @@
 ---
-title: "Getting Started With Apache Camel"
+title: "EIP and Apache Camel"
 date: 2020-03-31T13:06:37+08:00
 allowComments: true
 draft: true
 ---
 
-[Apache Camel][camel] is an excellent [enterprise integration][ei]
-framework. The canonical reference [Camel in Action, 2nd Edition][cia],
-though excellent, shows code that's not runnable (unless I've set up
-all the necessary stuff, such as a JMS queue). And it's also based
-on version 2.x, so as a beginner, I'm documenting my learning journey,
-but with version 3.1.x.
+[Apache Camel][camel] is THE Java implementation of
+[Enterprise Integration Patterns (EIP)][eip] that eases integrating
+applications within the organization. Until recently, I realized that
+not reading the EIP book is doing a disservice to myself when attempting
+to use Apache Camel.[^1]
 
-## Hello, World!
+Even though EIP focuses on using messaging for integration, the following
+is the complete list of integration styles stated in the book:
 
-I'm using Kotlin and Gradle in the examples below, but translating them
-to Java/Scala and Maven/Ant should be relatively simple. Let's start with
-some code first:
+* File transfer: source application outputs a file with pre-agreed format
+  to a pre-agreed destination that the integrator can pick up and process.
+  Changes within applications won't affect one another, as long as the
+  output file sticks to the pre-agreed format. The main disadvantage is
+  the low frequency in outputting the file: although outputting the as
+  frequent as necessary is possible, the challenge still lies in ensuring
+  the outputs are processed and not lost.
+* Shared database: different applications write to a common database to
+  share information, thus overcoming the low frequency limitation when
+  using file transfers. The main disadvantage lies in getting different
+  applications to agree to the same schema the shared database demands,
+  especially when applications are vendor software that can evolve their
+  application's schema as the vendor deems fit.
+* Remote procedure invocation: aka Remote Procedure Call (RPC), applications
+  expose APIs to allow others to invoke, thus allowing applications to
+  still encapsulate internal representations. The main disadvantage is that
+  applications could be tightly coupled together because invoking
+  applications may need to know the sequence in which they should invoke
+  the remote calls. RPIs may also lead to slow and unreliable system
+  if invoking systems aren't aware of the difference between remote and
+  local calls.
+* Messaging: source application outputs small data packets more frequently
+  and asynchronously than file transfers and receiving applications processes
+  them as soon as the data packets reach them. Unlike file transfers,
+  messages can be transformed while "in-flight" and the source/receiving
+  applications won't even need to know of such transformations. Such
+  transformation behavior means the glue code in the integration layer
+  are more involved, as compared to the other integration styles.
 
-{{< highlight kotlin "linenos=table, hl_lines=14" >}}
-// in file t.App.kt
+[^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
+      reading the EIP book shortly into chapter 1, but I ignored that
+      advice :sweat_smile:
 
-package t
-
-import org.apache.camel.CamelContext
-import org.apache.camel.ProducerTemplate
-import org.apache.camel.builder.RouteBuilder
-import org.apache.camel.impl.DefaultCamelContext
-
-fun main(args: Array<String>) { // public static void main(String... args) in Java-speak
-    val context: CamcelContext = DefaultCamelContext()  // instantiate new camel context
-    context.addRoutes(object : RouteBuilder() {         // similar to instantiating anonymous class
-        override fun configure() {
-            from("direct:greet").to("stream:out")       // routes direct producer to stdout
-        }
-    })
-
-    context.start()                                     // starts the context
-    val template: ProducerTemplate = context.createProducerTemplate()
-    template.sendBody("direct:greet", "Shaolang")       // interact with context by sending message to it directly
-    context.stop()
-}
-{{</ highlight >}}
-
-
-That short snippet is a lot more verbose than necessary, e.g., Kotlin can
-infer omitted type in variable declarations; spelling out the types makes it
-clear the interface/class most code should depend on, as opposed to the
-concrete type. In any case, the snippet still
-shows a lot of things: highlighted line 14 connects
-[Direct Component][direct-comp] to `stdout` (via
-[Steam Component][stream-comp]). The first component allows direct invocation
-to an endpoint when a producer sends a message (line 20). The second
-component grants access to `System.in`, `System.out`, and `System.err`.
-
-To run this example using Gradle, add the following dependencies:
-
-```kotlin
-dependencies {
-    // other dependencies are omitted for brevity
-
-    for (s in listOf("core-engine", "direct", "stream")) {
-      implementation("org.apache.camel:camel-${s}:3.1.0")
-    }
-
-    implementation("org.slf4j:slf4j-nop:1.7.30")  // so logs won't obfuscate stdout
-}
-```
-
-`camel-core-engine` is the minimal required to run Camel; `camel-direct` and
-`camel-stream` add the two endpoint components required by the code's route.
-Running `gradle run` should show the output "Shaolang".
-
-Both `direct:greet` and `stream:out` are endpoints, i.e., the former
-is the entry point and the latter the exit point. Endpoints are encoded
-in URIs in the form of `<scheme>:<context path>?<options>`. Both of our
-endpoints don't specify any options. The schema and context path for
-`direct:greet` are `direct` and `greet` respectively; Direct Component's
-documentation states that all such components use `direct` as its schema.
-However, its context path can be any string without blank spaces in-between.
-
-Unlike `direct:greeet`, `stream:out` is stricter: Stream Component's schema
-is `stream` and it accepts only following context paths:
-
-* `in`: accepts input from standard input
-* `out`: prints to standard output
-* `err`: prints to standard error
-* `header`: uses the header field in the message to determine the stream to
-  write to (i.e., this context cannot appear in `from()`)
-* `file`: prints to the file stated in the given option
-
-That's great, but all the trouble just to do that?
-
-## Adding processors to the routes
-
-Processors can be added to transform messages. For example, to
-append (transform) the phrase "Hello" to the input, we could add a processor
-in JavaBean convention between the endpoints:
-
-{{< highlight kotlin "linenos=table, linenostart=24" >}}
-class HelloBean {
-    fun sayGreeting(name: String): String {
-        return "Hello, $name!"
-    }
-}
-{{</ highlight >}}
-
-Note that the method we really want to invoke is `sayGreeting`. Update the
-route at line 14 as follows:
-
-{{< highlight kotlin "linenos=table, linenostart=14, hl_lines=2" >}}
-            from("direct:greet")
-                .bean(HelloBean::class.java, "sayGreeting")   // add processor
-                .to("stream:out")
-{{</ highlight >}}
-
-Camel will instantiate the bean with the Java class `HelloBean` and adds that
-to its registry. The second argument `"sayGreeting"` tells Camel the method
-it should invoke.
-
-To run this, add `camel-bean` as a dependency:
-
-{{< highlight kotlin "hl_lines=4" >}}
-dependencies {
-    // other dependencies are omitted for brevity
-
-    for (s in listOf("core-engine", "direct", "stream", "bean")) {
-      implementation("org.apache.camel:camel-${s}:3.1.0")
-    }
-
-    implementation("org.slf4j:slf4j-nop:1.7.30")  // so logs won't obfuscate stdout
-}
-{{</ highlight >}}
-
-And as expected, it prints `Hello, Shaolang` to standard output.
-
-`HelloBean` is an example of a very simple data transformation processor (it
-prefix the given string with `Hello, `. Camel has many useful data
-transformation components, such as transforming CSV to XML (data format
-transformation), and `java.lang.String` to `javax.jms.TextMessage` (data
-type transformation). Such transformation processors implement the Message
-Translator enterprise integration pattern.
-
-[ei]: https://en.wikipedia.org/wiki/Enterprise_integration
 [camel]: https://camel.apache.org
-[cia]: https://manning.com/books/camel-in-action-second-edition
-[direct-comp]: https://camel.apache.org/components/latest/direct-component.html
-[stream-comp]: https://camel.apache.org/components/latest/stream-component.html
+[eip]: https://www.enterpriseintegrationpatterns.com
+[cia2e]: https://www.manning.com/books/camel-in-action-second-edition
