@@ -50,7 +50,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("net.openhft.chronicle:chronicle-queue:5.19.8")
-    implementation("org.apache.logging.log4j:log4j-sl4fj18-impl:2.13.1")
+    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.13.1")
 }
 
 application {
