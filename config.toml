@@ -1,4 +1,5 @@
 baseURL = "https://shaolang.github.io/"
+enableEmoji = true
 languageCode = "en-us"
 title = "Bit by bit"
 ignoreFiles = [ "\\.swp$" ]
