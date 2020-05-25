@@ -43,6 +43,82 @@ is the complete list of integration styles stated in the book:
   transformation behavior means the glue code in the integration layer
   are more involved, as compared to the other integration styles.
 
+## High-level Components
+
+The following are the high-level components of a messaging system:
+
+* Message: a data packet the source application outputs and the receiving
+  application processes; note that the message may be transformed within
+  the messaging system without letting the source and receiving applications
+  know
+* Message channel: a "pipe" that the sender writes to and receiver reads from
+  messages in the messaging system
+* Pipes and filters: an architecture that chains multiple processing
+  components with channels
+* Message router: a component that directs messages in the messaging system
+  to the relevant component or the receiving application depending on
+  the message's content, e.g., the router may route the invoice to an
+  error queue when the billing address is wrong
+* Message translator: a conversion of the message, possibly from one format
+  to another so that the sender and receiver can use the format that
+  are suitable for them
+* Message endpoint: the entry/exit point of sender/receiver to the messaging system
+  that knows know the application and the messaging system work
+
+Each component has its own set of design patterns which Apache Camel
+has implemented.
+
+## Message
+
+Senders can send messages synchronously (request-response) or
+asynchronously (fire-and-forget). Camel differentiates the two in the
+message container: [`org.apache.camel.Exchange`][exchange]. `Exchange`
+has a `pattern` property that indicates whether the exchange type should
+be an `InOut`, `InOnly`, or `InOptionalOut` (enum values from
+[`org.apache.camel.ExchangePattern`][exchangePattern].
+
+## Setting up Apache Camel
+
+`build.gradle.kts` looks as follows:
+
+```kotlin {linenos=table,  hl_lines=[15,17,18,19,20]}
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.3.72"
+    application
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    implementation("org.slf4j:slf4j-nop:1.7.30")
+
+    for (n in listOf("core-engine", "core-languages", "bean", "direct",
+            "stream")) {
+        implementation("org.apache.camel:camel-$n:3.3.0")
+    }
+
+    implementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("org.jetbrains.kotlin:kotlin-test-junit")
+}
+
+application {
+    mainClassName = "eip.Appkt"
+}
+```
+
+Unlike 2.x series, 3.x series have broken up into multiple smaller jars
+for finer control on what's being pulled in for use:
+
+* `core-engine`: without which, nothing works
+* `core-languages`: for using scripting languages in building routes with
+  Camel's DSL
+
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
       advice :sweat_smile:
@@ -50,3 +126,5 @@ is the complete list of integration styles stated in the book:
 [camel]: https://camel.apache.org
 [eip]: https://www.enterpriseintegrationpatterns.com
 [cia2e]: https://www.manning.com/books/camel-in-action-second-edition
+[exchange]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/Exchange.html
+[exchangePattern]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/ExchangePattern.html
