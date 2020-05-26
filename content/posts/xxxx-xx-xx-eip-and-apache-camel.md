@@ -144,7 +144,7 @@ among themselves on such process-once-and-only-once behavior.
 
 Let's use [Apache ActiveMQ 5 "Classic"][activemq] to demonstrate this.
 Download ActiveMQ (latest version as of this writing is 5.15.12), unzip it,
-and run `bin/activemq start` at the installation directory. In your browser,
+and run `bin/activemq start` at the installation directory.[^2] In your browser,
 go to `localhost:8161/admin` and sign in with user ID "admin" and password
 "admin". Click _Queues_ tab and create a new queue `p2p.sample`.
 
@@ -201,6 +201,7 @@ Publish-Subscribe is (kinda) the opposite of
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
       advice :sweat_smile:
+[^2]: To stop, run `bin/activemq stop` in the installation directory.
 
 [camel]: https://camel.apache.org
 [eip]: https://www.enterpriseintegrationpatterns.com
