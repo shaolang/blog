@@ -20,7 +20,7 @@ need to make the some changes, changes that are not obvious to a noob like me:
 * Similarly, I need to update my cx_Freeze `setup.py` to point to the entry
   file in `src` (highlighted):
 
-{{< highlight python "linenos=inline,hl_lines=21">}}
+{{< highlight python "linenos=inline,hl_lines=23">}}
 # Assuming the filename is setup.py
 import os.path
 import sys
