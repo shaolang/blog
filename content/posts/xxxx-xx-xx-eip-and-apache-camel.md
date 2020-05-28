@@ -192,7 +192,10 @@ that in the `brokerURL` option, e.g.,
 
 You'll see 10 outputs in standard output after running the above. But if you
 comment off line 15 (the routing of ActiveMQ to `stream:out`, run the above,
-and examine ActiveMQ console, you'll see 10 pending messages in ActiveMQ.
+and examine ActiveMQ console, you'll see 10 pending messages in ActiveMQ, as
+shown below:
+
+![Point-to-point demo on ActiveMQ](/images/xxxx-xx-xx-activemq-p2p.png)
 
 ### Publish-Subscribe Channel
 Publish-Subscribe is (kinda) the opposite of
