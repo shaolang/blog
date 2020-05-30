@@ -134,9 +134,10 @@ are unidirectional.
 ### Point-to-Point Channel
 Such channels ensure that only one receiver consumes any given message.
 While there could be multiple receivers listening at the end of such
-channels, these receivers are known as Competing Consumers. It is the
+channels, these receivers are known as
+[Competing Consumers](#competing-consumers). It is the
 job of the point-to-point channel to ensure only one of them consumes the
-message. Such design makes the system scaling as it can load-balance across
+message. Such design makes the system scalable as it can load-balance across
 multiple receivers, without requiring competing consumers to coordinate
 among themselves on such process-once-and-only-once behavior.
 
@@ -191,15 +192,79 @@ that in the `brokerURL` option, e.g.,
 `activemq:p2p.sample?brokerURL=100.200.200.100:8989`
 
 You'll see 10 outputs in standard output after running the above. But if you
-comment off line 15 (the routing of ActiveMQ to `stream:out`, run the above,
+comment off line 15 (the routing of ActiveMQ to `stream:out`), run the above,
 and examine ActiveMQ console, you'll see 10 pending messages in ActiveMQ, as
 shown below:
 
 ![Point-to-point demo on ActiveMQ](/images/xxxx-xx-xx-activemq-p2p.png)
 
 ### Publish-Subscribe Channel
-Publish-Subscribe is (kinda) the opposite of
-[Point-to-Point](#point-to-point-channel).
+Publish-Subscribe Channel is (kinda) the opposite of
+[Point-to-Point](#point-to-point-channel): it delivers every message in
+the channel to all subscribers, ensuring that each subscriber receive
+the message once and only once. Publish-Subscribe Channel should only
+consider the message is consumed when it has deliver the message to
+all the subscribers. Once consumed, Publish-Subscribe Channel can
+drop/remove the message from the channel.
+
+#### Trying out
+
+Again, let's use Apache ActiveMQ for this. If you haven't follow the
+setup as described in [Point-to-Point Channel](#point-to-point-channel),
+but create a new topic `psc.sample` instead. Then run the code below:
+
+```kotlin {linenos="table", hl_lines=[21]}
+package eip
+
+import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.impl.DefaultCamelContext
+
+class Subscriber(val name: String) {
+    fun namedEcho(s: String): String {
+        return "$name received: $s"
+    }
+}
+
+
+fun main() {
+    val context = DefaultCamelContext()
+    val foo = Subscriber("foo")
+    val bar = Subscriber("bar")
+    val directURI = "direct:ps"
+
+    context.addRoutes(object: RouteBuilder() {
+        override fun configure() {
+            val mqURI = "activemq:topic:psc.sample"
+
+            from(directURI).to(mqURI)
+            from(mqURI).bean(foo, "namedEcho").to("stream:out")
+            from(mqURI).bean(bar, "namedEcho").to("stream:out")
+        }
+    })
+
+    context.start()
+
+    val producer = context.createProducerTemplate()
+    producer.sendBody(directURI, "Hello, World!")
+
+    context.stop()
+}
+```
+
+Line 21 specifies the JMS connection is a topic name, i.e., Publish-Subscribe
+Channel (otherwise, it's interpreted as a queue). Two subscribers of the
+channel prepend the message they receive with `<name> received: ` and outputs
+to standard output. `Subscriber` class is a very simple
+[Content Enricher](#content-enricher), a kind of
+[Message Translator](#message-translator) that we are using for this example
+to differentiate the subscribers.
+
+You will see two outputs in standard output, `foo received: Hello, World!`
+and `bar received: Hello, World!`. Examining ActiveMQ console, you'll see
+one message enqueued and two dequeued:
+
+![Publish-Subscribe demo on ActiveMQ](/images/xxxx-xx-xx-activemq-psc.png)
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
