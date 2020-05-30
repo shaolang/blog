@@ -265,6 +265,74 @@ one message enqueued and two dequeued:
 
 ![Publish-Subscribe demo on ActiveMQ](/images/xxxx-xx-xx-activemq-psc.png)
 
+#### Wildcard Subscribers
+
+While publishers must always publish messages to specific topics,
+subscribers may subscribe to multiple channels. Note that different
+messaging systems may use different syntax and capabilities for
+wildcard subscriptions.
+
+#### Trying out
+
+Again, using ActiveMQ for the following example, create two new topics
+`wc.baz` and `wc.quz`. Then run the following code:
+
+```kotlin {linenos="table", hl_lines=[28]}
+package eip
+
+import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.impl.RouteBuilder
+
+class TopicSubscriber(val name: String) {
+    fun namedEcho(s: String): String {
+        return "$name received: $s"
+    }
+}
+
+
+fun main() {
+    val context = DefaultCamelContext()
+    val foo = TopicSubscriber("foo")
+    val bar = TopicSubscriber("bar")
+    var directBazURI = "activemq:topic:wc.baz"
+    var directQuzURI = "activemq:topic:wc.quz"
+
+    context.addRoutes(object: RouteBuilder() {
+        override fun configure() {
+            val mqBazURI = "activemq:topic:wc.baz"
+            val mqQuzURI = "activemeq:topic:wc.quz"
+
+            from(directBazURI).to(mqBazURI)
+            from(directQuzURI).to(mqQuzURI)
+
+            from(mqBazURI).bean(foo, "namedEcho").to("stream:out")
+            from("activemq:topic:wc.*").bean(bar, "namedEcho").to("stream:out")
+      }
+    })
+
+    context.start()
+
+    val producer = context.createProducerTemplate()
+    producer.sendBody(directBazURI, "Hello, World!")
+    producer.sendBody(directQuzURI, "Goodbye, Universe!")
+
+    Thread.sleep(100)
+    context.stop()
+}
+```
+
+Notice that the topic name that routes the message to `bar` bean uses
+the wildcard `*` in its destination. This means `bar` bean has subscribed
+to both `wc.baz` and `wc.quz`. `foo` bean has subscribed only to
+`wc.baz` because it specifies the exact destination it's interested in.
+You'll see the following in standard output:
+
+```bash
+foo received: Hello, World!
+bar received: Hello, World!
+bar received: Goodbye, Universe!
+```
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
