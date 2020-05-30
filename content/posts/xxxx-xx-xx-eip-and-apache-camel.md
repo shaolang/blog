@@ -333,6 +333,35 @@ bar received: Hello, World!
 bar received: Goodbye, Universe!
 ```
 
+### Datatype Channel
+
+Sometimes, it's useful to set up multiple channels for the sender to
+send messages of different datatype and format to different channels.
+This is analogous to having a collection with homogeneous objects; such
+strategy makes its easier for receivers to know the datatype of the message
+it reads off the channel.
+
+However, putting different messages with different datatype on the channel
+because it is not economical to create too many channels when a sender needs
+to send a wide variety of messages of different datatype. There are multiple
+ways to help the receivers at the end of such channels know how to consume
+messages:
+
+1. Receiver uses [Selective Consumer](#selective-consumer) to process
+   only messages they want.
+2. Message system adds a [Content-Based Router](#content-based-router)
+   to route the messages by datatype to receivers.
+3. Sender employs [Format Indicator](#format-indicator) in the message's
+   header to specify the message format.
+4. Sender wraps the data in a [Command Message](#command-message) with
+   different command for each type of data and presumes receivers know
+   what to do with the data.
+
+Datatype Channel explains why messages in the channel must have the same data
+format, which is different from [Canonical Data Model](#canonical-data-model)
+that explains how all messages on all channels should follow the unified
+data model.
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
