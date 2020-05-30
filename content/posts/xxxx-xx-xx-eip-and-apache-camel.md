@@ -362,6 +362,32 @@ format, which is different from [Canonical Data Model](#canonical-data-model)
 that explains how all messages on all channels should follow the unified
 data model.
 
+### Invalid Message Channel
+
+When a receiver receive a message that it doesn't know how to process,
+it should reroute that message to an Invalid Message Channel for diagnostics.
+The receiver's context determines the message validity: a message may be
+valid to one receiver but invalid to another, e.g., the first receiver
+expects the message to be in CSV format, but the second expects it to be in
+XML. In such cases, it could be a wrongly configured sender putting the
+wrong message to the wrong channel. When a receiver receives a message
+that should contain certain data but doesn't, the receiver should also
+route such messages to the Invalid Message Channel, e.g., a message
+that should have an mailing address field but doesn't.
+
+Note that when one of the multiple receivers at the end of a channel
+determines that the message is invalid, we should consider that message
+to be invalid for all other receivers at the end of the same channel.
+When a message is valid to one receiver but not to the other, these two
+receivers should be on different channels.
+
+Be careful not to treat valid messages with semantically incorrect contents
+as invalid messages. For example, a sender may put a
+[Command Message](#command-message) to instruct the receiver to delete
+a record that does not exist. Such is not a messaging error but an
+application error, thus the receiver should not route such messages to
+the Invalid Message Channel but handle it as an invalid request (not
+invalid message).
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
