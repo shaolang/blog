@@ -389,10 +389,74 @@ application error, thus the receiver should not route such messages to
 the Invalid Message Channel but handle it as an invalid request (not
 invalid message).
 
+### Dead Letter Channel
+
+A close cousin to [Invalid Message Channel](#invalid-message-channel), Dead
+Letter Channel is where the messaging system routes messages that it couldn't
+deliver to. In the case of [Invalid Message Channel](#invalid-message-channel),
+the messaging system could deliver the message but the receiver could not
+process it due to invalidity. Most, if not all, messaging systems implements
+their version of Dead Letter Channel. Camel implements this pattern by
+swapping the default error handler with `DeadLetterChannel`.
+
+#### Trying out
+
+Create the queue `dead` in ActiveMQ, then run the code below:
+
+```kotlin {linenos="table", hl_lines=[14,15,16,18]}
+package eip
+
+import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.impl.DefaultCamelContext
+
+class NoOp
+
+fun main() {
+    val context = DefaultCamelContext()
+    val directURI = "direct:dlc"
+
+    context.addRoutes(object: RouteBuilder() {
+        override fun configure() {
+            val dlq = deadLetterQueue("activemq:queue:dead")
+                .maximumRedeliveries(3)
+                .redeliveryDelay(500)
+
+            errorHandler(dlq)
+            from(directURI).bean(NoOp::class.java).to("stream:out")
+        }
+    })
+
+    context.start()
+    val produceer = context.createProducerTemplate()
+    producer.sendBody(directURI, "Dead on arrival")
+
+    Thread.sleep(100)
+    context.stop()
+}
+```
+
+Lines 14-16 configures the `DeadLetterChannel` to reroute dead messages
+to `activemq:queue:dead` if the messaging system still fails to deliver
+the message after 3 retries (each retry has 500 milliseconds delay
+in-between). This then is used as the error handler (line 18).[^3]
+You shouldn't see the output `Dead on arrival` in the standard output.
+Camel has routed the message to the dead letter queue that you
+can examine in ActiveMQ's console: click the queue name, you'll see one
+message stuck in the queue.
+
+![ActiveMQ Dead Letter Queue Summary](/images/xxxx-xx-xx-activemq-dlc.png)
+
+When you click the message, you'll see the message `Dead on arrival`
+in the _Message Details_ section at the bottom:
+
+![ActiveMQ Dead Letter Queue Message Content](/images/xxxx-xx-xx-activemq-dlc-message.png)
+
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
       advice :sweat_smile:
 [^2]: To stop, run `bin/activemq stop` in the installation directory.
+[^3]: If there's not error handler specified, Camel uses the
+      [DefaultErrorHandler][defaulterrorhandler].
 
 [camel]: https://camel.apache.org
 [eip]: https://www.enterpriseintegrationpatterns.com
@@ -400,3 +464,4 @@ invalid message).
 [exchange]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/Exchange.html
 [exchangePattern]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/ExchangePattern.html
 [activemq]: https://activemq.apache.org
+[defaulterrorhandler]: https://camel.apache.org/manual/latest/error-handler.html#_defaulterrorhandler
