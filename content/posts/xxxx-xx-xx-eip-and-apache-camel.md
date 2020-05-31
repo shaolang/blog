@@ -451,6 +451,26 @@ in the _Message Details_ section at the bottom:
 
 ![ActiveMQ Dead Letter Queue Message Content](/images/xxxx-xx-xx-activemq-dlc-message.png)
 
+### Guaranteed Delivery
+
+Messaging systems and receivers may fail too, i.e., they may not be online
+all the time. Therefore, Guaranteed Delivery makes messages persistent so
+that they aren't lost even when the messaging system or receiver are not
+available. When receivers are offline, the messaging system will likely
+fail in redelivery, so persisting the messages may be necessary to prevent
+the case of the messaging system crashes too.
+
+By default, JMS-compliant systems persist messages; while this default is
+likely necessary in production, it's much easier to test and debug with
+persistence off to prevent the test/debug session from processing
+messages persisted at the end of the previous session. The ActiveMQ screenshot
+at the end of [Point-to-Point Channel](#point-to-point-channel) shows 10
+messages are pending processing. If that were to be running in production,
+then good, nothing is lost; but if that were to be a testing/debugging
+session, the session will be processing messages from the previous one. One
+wonders where those extra messages come from!
+
+
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
       advice :sweat_smile:
