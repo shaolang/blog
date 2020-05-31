@@ -470,6 +470,34 @@ then good, nothing is lost; but if that were to be a testing/debugging
 session, the session will be processing messages from the previous one. One
 wonders where those extra messages come from!
 
+### Channel Adapter
+
+Channel Adapter allows applications that aren't designed for integration
+with messaging systems to be able to connect to one. Often, it may be
+impossible to customize these applications due to the lack of access
+to the source code or due to the lack of deep understanding of the
+application logic and messaging API. Note that simply making the application
+output a file for putting into the messaging system does not make that
+a Channel Adapter.
+
+There are three ways to realize a Channel Adapter:
+
+1. User Interface Adapter: aka screen scraping, uses the application's
+   screen--like a human would--and passes information it scrapes from the
+   screen to the messaging system; such adapter may be slow and brittle as
+   it needs to parse and scrape from UIs which usually have more
+   frequent changes
+2. Business Logic Adapter: wraps components the application exposes in
+   the form of COM objects, CORBA components, EJBs, libraries, HTTP APIs, etc;
+   usually, such adapting is the best choice because the vendor (internal
+   or otherwise) are expressly exposing the APIs for others to use
+3. Database Adapter: extracts data directly from the application's database,
+   with possibly real-time interfacing to the messaging system by adding
+   triggers in the database for notifications of record updates; while this
+   is the least invasive, this require intimate knowledge of the application's
+   database schema which vendors normally consider these as unpublished and
+   reserve the rights to change it at will.
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
