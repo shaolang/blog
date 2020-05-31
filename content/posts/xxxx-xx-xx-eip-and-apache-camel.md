@@ -498,6 +498,10 @@ There are three ways to realize a Channel Adapter:
    database schema which vendors normally consider these as unpublished and
    reserve the rights to change it at will.
 
+Apache Camel supports this pattern through its plethora of
+[components][components], e.g., it has a [Twilio component][twilio-component]
+since version 2.20 that adapts Twilio REST APIs for Camel use.
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
@@ -513,3 +517,5 @@ There are three ways to realize a Channel Adapter:
 [exchangePattern]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/ExchangePattern.html
 [activemq]: https://activemq.apache.org
 [defaulterrorhandler]: https://camel.apache.org/manual/latest/error-handler.html#_defaulterrorhandler
+[components]: https://camel.apache.org/components/latest/index.html
+[twilio-component]: https://camel.apache.org/components/latest/twilio-component.html
