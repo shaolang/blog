@@ -100,3 +100,5 @@ this works for me for now.
 
 [^1]: At of pandas 1.0.x, it doesn't output any warning/error messages or
       crash when running this snippet.
+[^2]: Don't ask me why; I haven't figured out why the assignment works only
+      when the conversion to list occurs.
