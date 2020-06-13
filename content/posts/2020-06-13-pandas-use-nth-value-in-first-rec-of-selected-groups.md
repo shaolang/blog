@@ -57,9 +57,7 @@ to grok:
 ```python {linenos=table}
 reps = len(df.loc[df.is_borrowed]) // 3
 df.loc[df.is_borrowed, 's_no'] = [1, 2, 3] * reps
-
 df.loc[df.s_no == 1, 'returned_date'] = list(df.loc[df.s_no == 3, 'date'])
-
 df.drop('s_no', axis=1, inplace=True)
 ```
 
