@@ -6,7 +6,7 @@ allowComments: true
 
 How do you transform the following data frame:
 
-```
+```html
    | book_id |       date | is_borrowed
  0 |     abc | 2020-01-01 |        True
  1 |     abc | 2020-02-02 |        True
@@ -24,7 +24,7 @@ How do you transform the following data frame:
 to the following?
 
 
-```
+```html
    | book_id |       date | is_borrowed | return_date
  0 |     abc | 2020-01-01 |        True | 2020-03-03
  1 |     abc | 2020-02-02 |        True |        NaN
@@ -72,7 +72,7 @@ the array by `reps` because the number of values on the right-hand side of `=`
 must be the same as the number of "selected" rows on the left. At this point in
 time, `df` looks as follows:
 
-```
+```html
    | book_id |       date | is_borrowed | s_no
  0 |     abc | 2020-01-01 |        True |  1.0
  1 |     abc | 2020-02-02 |        True |  2.0
