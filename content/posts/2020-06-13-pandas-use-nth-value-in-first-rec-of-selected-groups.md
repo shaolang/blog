@@ -21,7 +21,8 @@ How do you transform the following data frame:
 10 |     jkl | 2020-11-11 |       False
 ```
 
-to the following?
+to the following, i.e., for each book that is borrowed, take the last
+date record in the group as the return date?
 
 
 ```html
