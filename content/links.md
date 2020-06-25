@@ -9,3 +9,4 @@ List of interesting/helpful/queer/etc links:
 - [On Coding, Ego, and Attention](https://josebrowne.com/on-coding-ego-and-attention): on self-improvement by not making work personal
 - [Practical Data Coercion with Prismatic/schema](https://camdez.com/blog/2015/08/27/practical-data-coercion-with-prismatic-schema): especially on how to make multiple
   coercion matchers work together
+- [Taming Advanced Compilation Bugs in ClojureScript Projects](https://dev.solita.fi/2020/06/25/taming-cljs-advanced-compilation.html)
