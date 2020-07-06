@@ -43,7 +43,7 @@ Simple enough; `gen-item-price-list` generates a map with three items: the
 items being checked out, the total expected price, and the price list to use.
 Let's take a look at `gen-item-price-list`:
 
-```clojure {linnos=table}
+```clojure {linenos=table}
 (def gen-item-price-list
   (gen/let [prices                  gen-price-list
             [items expected-price]  (gen-item-list prices)]
@@ -56,11 +56,12 @@ The generated price list `prices` is given to `gen-item-list` to generate
 the list of checked out items and calculate the total price. Because there're
 no specials, calculating the total price is relatively easier:
 
-```clojure {lineno=table}
+```clojure {linenos=table, hl_lines=[14]}
 (def gen-non-empty-string
   (let [chars "abcdefghijklmnopqrstuvwxyz0123456789"]
     (gen/let [cs (gen/list (gen/elements chars))]
       (apply str (rand-nth chars) cs))))
+
 
 (def gen-price-list ;; gens {<item> => <price>}
   (gen/let [price-list (gen/not-empty
@@ -91,7 +92,33 @@ empty string, I ended up coding up one that fit my needs better.
 
 `gen-item-list` generates a list of items by choosing the keys of the given
 `price-list` map.[^2] The function then loops through the items, retrieves
-the price, and sums them up.
+the price, and sums them up. Because line 14 does not use `not-empty`
+generator, the generated item list may be empty, thus making it return zero
+as the expected price.
+
+The simplest working code that satisfies this property looks as follows:
+
+```clojure {linenos=table}
+(ns pbtic.checkout)
+
+
+(defn total [item-list price-list _specials]
+  (apply + (map #(get price-list %) item-list)))
+```
+
+The actual implementation is a little anti-climax, after all the effort in
+writing the generators. But the work done so far covered the following
+cases:
+
+* Checkout list is empty
+* Order of scanning checkout items are random, i.e., identical items aren't
+  necessarily being checked out at the same time
+* Specials list is empty
+
+However, the property also implicitly assumes all items being checked out
+have the corresponding price in the price list.
+
+## Handling Specials
 
 [^1]: Erlang introduced maps only from OTP 17.0 onwards.
 [^2]: It's a map of items and corresponding price, so calling it a `price-list`
