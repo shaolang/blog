@@ -27,7 +27,7 @@ But first the namespace and relevant `:require`:
             [pbtic.checkout :as checkout]))
 ```
 
-## Nothing special
+## Nothing Special
 
 The first property the book implements is "no specials," specifically the
 special's price list is empty:
@@ -261,11 +261,7 @@ follows:
 * `apply-regular`: returns total prices of remaining items
 
 ```clojure {linenos=table}
-(defn apply-regular [items prices]
-  (transduce (map (fn [[item count]] (* count (get prices item))))
-             +
-             0
-             items))
+(def count-seen frequencies)
 
 
 (defn apply-specials [counts specials]
@@ -279,8 +275,22 @@ follows:
           counts))
 
 
-(def count-seen frequencies)
+(defn apply-regular [items prices]
+  (transduce (map (fn [[item count]] (* count (get prices item))))
+             +
+             0
+             items))
 ```
+
+## Negative Testing
+Code written so far covers the happy path: it works when inputs are correct.
+Negative testing covers the path less travelled. Writing broad properties
+that test the more general properties of the code can help in checking
+whether the happy-path properties are consistent. The broader such properties
+are, the better they are in searching for problems that we expect.[^6]
+Think of broad properties as supplements or anchors to the specific ones, they
+aren't too useful on their own.
+
 
 [^1]: Erlang introduced maps only from OTP 17.0 onwards.
 [^2]: It's a map of items and corresponding price, so calling it a `price-list`
@@ -292,6 +302,8 @@ follows:
 [^4]: Actually, more appropriately, Fred's wisdom.
 [^5]: Because the price generated isn't checked against the price list, it's
       possible that the "special" price is actually more costly :joy:
+[^6]: Finding cases that we didn't think of is exactly the reason why
+      we adopt property-based testing.
 
 [prev]: ../2019-08-10-property-based-testing-from-elixir-to-clojure/
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
