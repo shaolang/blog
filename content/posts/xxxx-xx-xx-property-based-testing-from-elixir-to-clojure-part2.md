@@ -269,20 +269,14 @@ follows:
 
 
 (defn apply-specials [counts specials]
-  (let [counts-map (apply merge (map (fn [[item seen]] {item {:seen seen}})
-                                     counts))]
-    (->> (merge-with merge specials counts-map)
-         (map (fn [[item {:keys [count price seen]}]]
-                (when seen
-                  {:item      item
-                   :remainder (if count (rem seen count) seen)
-                   :price     (if price (* (quot seen count) price) 0)})))
-         (remove nil?)
-         (reduce (fn [result {:keys [item remainder price]}]
-                   (-> result
-                       (update :counts-left merge {item remainder})
-                       (update :prices + price)))
-                 {:counts-left nil :prices 0}))))
+  (reduce (fn [{:keys [prices counts-left]} [item seen]]
+            (if-let [{:keys [count price]} (get specials item)]
+              {:counts-left (merge counts-left {item (rem seen count)})
+               :prices      (+ prices (* (quot seen count) price))}
+              {:counts-left (merge counts-left {item seen})
+               :prices      prices}))
+          {:counts-left nil :prices 0}
+          counts))
 
 
 (def count-seen frequencies)
