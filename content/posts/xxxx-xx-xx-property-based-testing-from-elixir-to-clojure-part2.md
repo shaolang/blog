@@ -176,16 +176,128 @@ as `gen-price-list`, as well as one new issue (which actually isn't that
 important and could be left as such; try thinking about it before
 turning to the footnote[^5]).
 
+What's left from `gen-item-price-special` are `gen-special` and `gen-regular`;
+due to Clojure's lack of pattern matching at the function level, the code
+looks a little different. First, `gen-regular`:
+
+```clojure {linenos=table}
+(defn gen-regular [prices specials]
+  (letfn [(gen-count [item]
+            (if (contains? specials item)
+              (gen/choose 0 (dec (get-in specials [item :count])))
+              gen/nat))]
+    (gen/return
+      (->> prices
+           (map (fn [[item price]]
+                  (let [counts (gen/generate (gen-count item))]
+                    {:items     (repeat counts item)
+                     :sub-total (* counts price)})))
+           (reduce (fn [{:keys [all-items total] :as result}
+                        {:keys [items sub-total]}]
+                     (assoc result
+                            :total (+ total sub-total)
+                            :all-items (shuffle (concat all-items items))))
+                   {:total 0
+                    :all-items []})
+           ((juxt :all-items :total))))))
+```
+
+`gen-regular` defines an inline function `gen-count` that restricts the
+generation of item count depending on whether the item exists in the
+special list or not:
+
+* If it does, it generates a number between zero and one-less than the
+  special's count, i.e., it always generates a number that never triggers
+  the special price to kick in.
+* Otherwise, it generates any number of items, even zero.
+
+Then, for each item in the price list, it generates the item count using
+the inline `gen-count` function (`map` operation from lines 8 to 11),
+calculates the total price and creates the item list (`reduce` operation
+from lines 12 to 18), and returns the total price and item list (line 19).
+The shuffling of the items at line 16 is to keep to the "randomness" when
+checking out, i.e., same items aren't always checked out together.
+
+```clojure {linenos=table}
+(defn gen-special [_ specials]
+  (gen/let [multipliers (gen/vector gen/nat (count specials))]
+    (->> (zipmap specials multipliers)
+         (map (fn [[[item {:keys [count price]}] multiplier]]
+                {:items     (repeat (* count multiplier) item)
+                 :sub-total (* price multiplier)}))
+         (reduce (fn [{:keys [all-items total] :as result}
+                      {:keys [items sub-total]}]
+                   (assoc result
+                          :all-items (concat all-items items)
+                          :total     (+ total sub-total)))
+                 {:total 0
+                  :all-items []})
+         ((juxt :all-items :total)))))
+```
+
+`gen-special` is relatively similar in its map-reduce operation; the main
+difference lies in it generating multipliers--which could be zero--for each
+special that is used to create the item list based on these multipliers.
+Yeah, the destructuring at line 4 is a little involved, but that makes the
+anonymous function's body cleaner.
+
+The updated `pbtic.checkout/total` that handles specials as well looks as
+follows:
+
+```clojure {linenos=table}
+(defn total [item-list price-list specials]
+  (let [counts (count-seen item-list)
+        {:keys [counts-left prices]} (apply-specials counts specials)]
+    (+ prices (apply-regular counts-left price-list))))
+```
+
+`pbtic.checkout/total` uses three helper functions:
+
+* `count-seen`: returns a map of items and the item counts based on the
+  given item list; it essentially just aliases to the built-in
+  `frequencies` function
+* `apply-specials`: returns a map of remaining items that do not qualify
+  for special prices and the total price of items that qualify
+* `apply-regular`: returns total prices of remaining items
+
+```clojure {linenos=table}
+(defn apply-regular [items prices]
+  (transduce (map (fn [[item count]] (* count (get prices item))))
+             +
+             0
+             items))
+
+
+(defn apply-specials [counts specials]
+  (let [counts-map (apply merge (map (fn [[item seen]] {item {:seen seen}})
+                                     counts))]
+    (->> (merge-with merge specials counts-map)
+         (map (fn [[item {:keys [count price seen]}]]
+                (when seen
+                  {:item      item
+                   :remainder (if count (rem seen count) seen)
+                   :price     (if price (* (quot seen count) price) 0)})))
+         (remove nil?)
+         (reduce (fn [result {:keys [item remainder price]}]
+                   (-> result
+                       (update :counts-left merge {item remainder})
+                       (update :prices + price)))
+                 {:counts-left nil :prices 0}))))
+
+
+(def count-seen frequencies)
+```
+
 [^1]: Erlang introduced maps only from OTP 17.0 onwards.
 [^2]: It's a map of items and corresponding price, so calling it a `price-list`
       problably is not ideal.
-[^3]: If I remember correctly, I actually hit the issue and had to address
+[^3]: If I remember correctly, I actually hit the issue at this point in
+      time (for both PropCheck and test.check) and had to address
       it before proceeding on to the specials property. Nevertheless,
       I'm keeping the post as-is to follow the book's flow.
 [^4]: Actually, more appropriately, Fred's wisdom.
 [^5]: Because the price generated isn't checked against the price list, it's
-      possible that the "special" price is actually more costly :joy: Nope,
-      the book didn't address this, 'cos it really is a small problem.
+      possible that the "special" price is actually more costly :joy:
 
 [prev]: ../2019-08-10-property-based-testing-from-elixir-to-clojure/
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
