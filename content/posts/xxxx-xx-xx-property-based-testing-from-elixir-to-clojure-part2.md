@@ -291,6 +291,45 @@ are, the better they are in searching for problems that we expect.[^6]
 Think of broad properties as supplements or anchors to the specific ones, they
 aren't too useful on their own.
 
+```clojure {linenos=table}
+(defspec negative-testing-for-expected-results
+  (for-all [{:keys [items prices specials]} gen-lax-lists]
+    (integer? (checkout/total items prices specials))))
+```
+
+This property is very, very broad: it expects `pbtic.checkout/total` always
+return an integer. But instead of reusing existing generators, it uses a new
+one `gen-lax-lists`:
+
+```clojure {linenos=table}
+(def gen-lax-lists
+  (gen/hash-map
+   :items     (gen/list gen/string-alphanumeric)
+   :prices    (gen/fmap #(into {} %)
+                        (gen/list (gen/tuple gen/string-alphanumeric gen/int)))
+   :specials  (gen/fmap (fn [vs]
+                          (->> vs
+                               (map (fn [[item count price]]
+                                      {item {:count count :price price}}))
+                               (apply merge)))
+                        (gen/list (gen/tuple gen/string-alphanumeric
+                                             gen/int
+                                             gen/int)))))
+```
+
+Unlike `gen-item-price-list` and `gen-item-price-special`, `gen-lax-lists`
+does not generate the checkout items and specials from its generated price list.
+When we run the test, we'll be greeted with a glorious stacktrace caused by
+`java.lang.NullPointerException`. Let's make the test output friendlier by
+wrapping the body in try-catch:
+
+```clojure {linenos=table}
+(defspec negative-testing-for-expected-results
+  (for-all [{:keys [items prices specials]} gen-lax-lists]
+    (try
+      (integer? (checkout/total items prices specials))
+      (catch Exception _ false))))
+```
 
 [^1]: Erlang introduced maps only from OTP 17.0 onwards.
 [^2]: It's a map of items and corresponding price, so calling it a `price-list`
