@@ -328,8 +328,136 @@ wrapping the body in try-catch:
   (for-all [{:keys [items prices specials]} gen-lax-lists]
     (try
       (integer? (checkout/total items prices specials))
-      (catch Exception _ false))))
+      (catch Throwable _ false))))
 ```
+
+Running the above, you'll see something similar to the following:
+
+```
+FAIL in (negative-testing-for-expected-results) (checkout_test.clj)
+expected: {:result true}
+  actual: {:shrunk
+           {:total-nodes-visited 29,
+            ;; omitted for brevity
+            :smallest
+            [{:items (""),
+              :prices {},
+              :specials nil}]},
+             ;; omitted for brevity
+          }
+```
+
+Looking up the price of an unknown item causes the problem. This probably
+is acceptable but instead of throwing a generic `NullPointerException`,
+throwing one with more information probably is more helpful. Adjusting
+the property:
+
+```clojure {linenos=table}
+(defspec negative-testing-for-expected-results
+  (for-all [{:keys [items prices specials]} gen-lax-lists]
+    (try
+      (integer? (checkout/total items prices specials))
+      (catch Throwable ex
+        (contains (ex-data e) :unknown-item)))))
+```
+
+And updating the code in `pbtic.checkout`:
+
+```clojure {linenos=table, hl_lines=[8]}
+(defn cost-of-item [prices item]
+  (if-let [price (get prices item)]
+    price
+    (throw (ex-info "unknown-item" {:unknown-item item}))))
+
+
+(defn apply-regular [items prices]
+  (transduce (map (fn [[item count]] (* count (cost-of-item prices item))))
+             +
+             0
+             items))
+```
+
+The new `cost-of-item` function throws the exception with more helpful
+information when it can't retrieve the item's prices from the given `prices`
+map. `apply-regular` then replaces the original `(get prices item)` with
+`(cost-of-item prices item)` to satisfy the property's expected outcome.
+Running the test again, another error comes up[^7]:
+
+```
+FAIL in (negative-testing-for-expected-results) (checkout_test.clj)
+expected: {:result true}
+  actual: {:shrunk
+           {:total-nodes-visited 29,
+            ;; omitted for brevity
+            :smallest
+            [{:items ("C"),
+              :prices {},
+              :specials {"C" {:count 0, :price 1}}}]},
+             ;; omitted for brevity
+          }
+```
+
+A very lax specials; let's adopt the same strategy in throwing a more helpful
+exception:
+
+```clojure {linenos=table, hl_lines=[6, 7]}
+(defspec negative-testing-for-expected-results
+  (for-all [{:keys [items prices specials]} gen-lax-lists]
+    (try
+      (integer? (checkout/total items prices specials))
+      (catch Throwable ex
+        (or (contains (ex-data e) :unknown-item)
+            (contains (ex-data e) :invalid-special-list)))))
+```
+
+And changes in `pbtic.checkout`:
+
+```clojure {linenos=table, hl_lines=[6, 7]}
+(defn valid-special-list? [specials]
+  (every? #(pos? (:count %)) (vals specials)))
+
+
+(defn total [item-list price-list specials]
+  (when-not (valid-special-list? specials)
+    (throw (ex-info "invalid special list" {:invalid-special-list true})))
+  (let [counts (count-seen item-list)
+        {:keys [counts-left prices]} (apply-specials counts specials)]
+    (+ prices (apply-regular counts-left price-list))))
+```
+
+Unfortunately, `test.check` doesn't have any functions to collect statistics
+on the generated values, so we'll just continue with text in the book and
+make `gen-lax-lists` a little stricter so that the property is closer
+to the "nothing works" end of the spectrum[^8]:
+
+```clojure {linenos=table}
+(def gen-lax-lists
+  (let [known-items ["A", "B", "C"]
+        gen-maybe-known (gen/bind (gen/list gen-non-empty-string)
+                                  #(gen/elements (concat known-items %)))]
+    (gen/hash-map
+     :items   (gen/list gen-maybe-known)
+     :prices  (gen/fmap #(into {} %) (gen/list (gen/tuple gen-maybe-known
+                                                          gen/nat)))
+     :specials (gen/fmap (fn [vs]
+                           (->> vs
+                                (map (fn [[item count price]]
+                                       {item {:count count :price price}}))
+                                (apply merge)))
+                         (gen/list (gen/tuple gen-maybe-known
+                                              gen/nat
+                                              gen/nat))))))
+```
+
+Unlike the book's code, the above does not cause any new failures in/expose
+any issues with the code written so far. In fact, because we adopted Clojure's
+idiom in using maps, instead of keyword lists, the other issues mentioned
+in the book are not applicable to our code so far.
+
+## Summary
+
+This wraps up the porting of Erlang/Elixir code from chapter 6 to Clojure.
+In the next post, I'll cover stateful properties.
 
 [^1]: Erlang introduced maps only from OTP 17.0 onwards.
 [^2]: It's a map of items and corresponding price, so calling it a `price-list`
@@ -343,8 +471,14 @@ wrapping the body in try-catch:
       possible that the "special" price is actually more costly :joy:
 [^6]: Finding cases that we didn't think of is exactly the reason why
       we adopt property-based testing.
+[^7]: The book did not hit this problem at this point in time; it hit this
+      much later on.
+[^8]: Buy the book to understand what this means. Alternatively,
+      you can read the
+      [description at the book's old-but-free website][checkout]
 
 [prev]: ../2019-08-10-property-based-testing-from-elixir-to-clojure/
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
 [bttc]: http://codekata.com/kata/kata09-back-to-the-checkout
 [kwl-elixir]: https://elixir-lang.org/getting-started/keywords-and-maps.html#keyword-lists
+[checkout]: https://propertesting.com/book_case_study_stateless_properties_with_a_checkout.html#_negative_tests
