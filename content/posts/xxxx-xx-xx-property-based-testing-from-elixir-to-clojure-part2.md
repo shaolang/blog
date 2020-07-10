@@ -1,8 +1,7 @@
 ---
 title: "Property-Based Testing: From Erlang/Elixir to Clojure Part 2"
-date: 2020-07-06T07:32:46+08:00
+date: 2020-07-10T22:00:00+08:00
 allowComments: true
-draft: true
 ---
 
 In the [previous post][prev] that covered chapter 5 of
