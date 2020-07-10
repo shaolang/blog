@@ -478,6 +478,7 @@ In the next post, I'll cover stateful properties.
 
 [prev]: ../2019-08-10-property-based-testing-from-elixir-to-clojure/
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
+[test.check]: https://github.com/clojure/test.check
 [bttc]: http://codekata.com/kata/kata09-back-to-the-checkout
 [kwl-elixir]: https://elixir-lang.org/getting-started/keywords-and-maps.html#keyword-lists
 [checkout]: https://propertesting.com/book_case_study_stateless_properties_with_a_checkout.html#_negative_tests
