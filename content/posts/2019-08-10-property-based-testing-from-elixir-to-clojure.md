@@ -515,7 +515,7 @@ nil
 ## Summary
 
 It's quite a blast in porting the code from Erlang/Elixir to Clojure. In the
-next post, I'll cover the code ported from chapter 6
+[next post][part2], I'll cover the code ported from chapter 6
 "Properties-Driven Development."
 
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
@@ -530,3 +530,4 @@ next post, I'll cover the code ported from chapter 6
 [elixir-date-range]: https://hexdocs.pm/elixir/Date.html#range/2
 [->>]: https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/-%3E%3E
 [|>]: https://hexdocs.pm/elixir/Kernel.html#%7C%3E/2
+[part2]: ../2020-07-10-property-based-testing-from-elixir-to-clojure-part2/
