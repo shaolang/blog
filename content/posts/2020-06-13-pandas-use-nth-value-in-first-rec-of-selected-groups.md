@@ -2,6 +2,7 @@
 title: "pandas: Use Nth Value in First Record of Selected Groups"
 date: 2020-06-13T08:12:09+08:00
 allowComments: true
+tags: [python, pandas]
 ---
 
 How do you transform the following data frame:

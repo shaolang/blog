@@ -2,6 +2,7 @@
 title: "pip Behind Corporate Firewalls"
 date: 2020-01-28T12:17:59+08:00
 allowComments: true
+tags: [python]
 ---
 
 Corporate firewalls... never mind, that's a rant for another day.

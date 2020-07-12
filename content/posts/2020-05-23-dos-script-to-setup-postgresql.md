@@ -2,6 +2,7 @@
 title: "MSDOS Script to Set Up PostgreSQL"
 date: 2020-05-23T20:14:32+08:00
 allowComments: true
+tags: [postgresql]
 ---
 
 Don't ask "Why Windows?"

@@ -2,6 +2,7 @@
 title: "Property-Based Testing: From Erlang/Elixir to Clojure"
 date: 2019-08-12T00:00:00+08:00
 allowComments: true
+tags: [clojure, property-based testing]
 ---
 
 Reading [Property-Based Testing with PropEr, Erlang, and Elixir][pbtpee] and
