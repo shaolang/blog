@@ -11,6 +11,12 @@ body {
   }
 }
 
+@media (max-width: 800px) {
+  body {
+    margin: 0 5%;
+  }
+}
+
 @media (max-width: 480px) {
   body {
     font-size: 1.5rem;
@@ -67,7 +73,7 @@ p > code {
 }
 
 nav.tags {
-  margin-top: 0.75rem;
+  display: inline;
 }
 
 nav.tags ul {
