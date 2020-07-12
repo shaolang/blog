@@ -66,6 +66,31 @@ p > code {
   background-color: #eee;
 }
 
+nav.tags {
+  margin-top: 0.75rem;
+}
+
+nav.tags ul {
+  display: inline;
+  list-style: none;
+  padding: 0;
+}
+
+nav.tags ul li {
+  display: inline;
+}
+
+nav.tags ul li a {
+  border: 1px solid #888;
+  border-radius: 3px 3px;
+  margin: 0 0.2rem;
+  padding: 0 0.2rem;
+}
+
+nav.tags ul li a:hover {
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px #888;
+}
 
 table {
   border-collapse: collapse;

@@ -8,6 +8,13 @@
   {{ if .PublishDate }}
     {{ .PublishDate.Format "Jan 2, 2006" }}
   {{ end }}
+  {{ if .GetTerms "tags" }}
+    <nav class='tags'>
+      <ul class='tags'>{{ range (.GetTerms "tags") }}
+        <li><a href='{{ .Permalink }}'>{{ .LinkTitle }}</a></li>
+      {{ end }}</ul>
+    </nav>
+  {{ end }}
   <article>
     {{ .Content }}
   </article>
