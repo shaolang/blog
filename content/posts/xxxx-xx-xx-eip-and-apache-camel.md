@@ -503,6 +503,21 @@ Apache Camel supports this pattern through its plethora of
 [components][components], e.g., it has a [Twilio component][twilio-component]
 since version 2.20 that adapts Twilio REST APIs for Camel use.
 
+Channel adapters suffer from the need to convert the messages to resemble
+the implementation of the component being adapted. For example, a database
+adapter requires incoming messages to use the same names and fields of
+the tables. Such coupling hurts integration, so channel adapters are usually
+paired with [Message Translator](#message-translator) to convert
+application-specific messages into messages that complies with the
+[Canonical Data Model](#canonical-data-model).
+
+There are two special forms of channel adapters:
+
+1. Metadata adapter: such adapters expose metadata of the application they
+   adapt, e.g., system tables in databases that describe the application tables.
+2. [Messaging Bridge](#messaging-bridge): these connect one messaging system
+   to another messaging system.
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
