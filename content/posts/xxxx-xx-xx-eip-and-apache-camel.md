@@ -500,7 +500,7 @@ There are three ways to realize a Channel Adapter:
    reserve the rights to change it at will.
 
 Apache Camel supports this pattern through its plethora of
-[components][components], e.g., it has a [Twilio component][twilio-component]
+[components][components], e.g., it has a [Twilio component][camel-twilio]
 since version 2.20 that adapts Twilio REST APIs for Camel use.
 
 Channel adapters suffer from the need to convert the messages to resemble
@@ -518,6 +518,79 @@ There are two special forms of channel adapters:
 2. [Messaging Bridge](#messaging-bridge): these connect one messaging system
    to another messaging system.
 
+#### Trying out
+
+Let's use SQLite to demonstrate using a [JDBC][camel-jdbc] channel adapter. Add
+`org.xerial:sqlite-jdbc:3.32.3.1` to the dependency block in `build.gradle.kts`
+and run the code below:
+
+```kotlin {linenos=table, hl_lines=[13,25]}
+package eip
+
+import javax.sql.DataSource
+import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.impl.DefaultCamelContext
+import org.sqlite.SQLiteDataSource
+
+
+fun main() {
+    val datasource = setupDatabase()
+    val context = DefaultCamelContext()
+
+    context.registry.bind("myDS", datasource)
+
+    context.addRoutes(object: RouteBuilder() {
+        override fun configure() {
+            from("direct:trigger").to("jdbc:myDS")
+        }
+    })
+
+    context.start()
+
+    val producer = context.createProducerTemplate()
+
+    producer.sendBody("direct:trigger", "INSERT INTO foo VALUES('hi', 'world')")
+    readOneRowFromFoo(datasource)
+
+    context.stop()
+}
+
+
+private fun setupDatabase(): DataSource {
+    val ds = SQLiteDataSource()
+    ds.setUrl("jdbc:sqlite:./build/channel-adapter.db")
+
+    ds.getConnection().use { conn ->
+        val stmt = conn.createStatement()
+        stmt.execute("DROP TABLE IF EXISTS foo")
+        stmt.execute("CREATE TABLE foo (bar, baz)")
+    }
+
+    return ds
+}
+
+
+private fun readOneRowFromFoo(datasource: DataSource) {
+    datasource.getConnection().use { conn ->
+        val stmt = conn.createStatement()
+        val resultSet = stmt.executeQuery("SELECT bar, baz FROM foo")
+        resultSet.next()
+
+        println("bar=${resultSet.getString(1)}, baz=${resultSet.getString(2)}")
+    }
+}
+```
+
+This is a big chunk of code, so let's break it down a little to understand.
+After calling the private function `setupDatabase` to create the table `foo`,
+line 13 registers the returned data source in Apache Camel's registry as
+`myDS`.[^4] Registration--however it is done--is necessary, as it allows
+Apache Camel to look up resources the components need.
+Line 25 send an SQL statement as the body to the JDBC channel
+adapter via `direct:trigger` to insert a row into the table `foo`.
+Immediately after that, it reads one row from the table and outputs the
+result. You should see `bar=hi, baz=world` in standard output.
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
@@ -525,6 +598,7 @@ There are two special forms of channel adapters:
 [^2]: To stop, run `bin/activemq stop` in the installation directory.
 [^3]: If there's not error handler specified, Camel uses the
       [DefaultErrorHandler][defaulterrorhandler].
+[^4]: In our case, we're using `org.apache.camel.support.DefaultRegistry`.
 
 [camel]: https://camel.apache.org
 [eip]: https://www.enterpriseintegrationpatterns.com
@@ -534,4 +608,5 @@ There are two special forms of channel adapters:
 [activemq]: https://activemq.apache.org
 [defaulterrorhandler]: https://camel.apache.org/manual/latest/error-handler.html#_defaulterrorhandler
 [components]: https://camel.apache.org/components/latest/index.html
-[twilio-component]: https://camel.apache.org/components/latest/twilio-component.html
+[camel-twilio]: https://camel.apache.org/components/latest/twilio-component.html
+[camel-jdbc]: https://camel.apache.org/components/latest/jdbc-component.html
