@@ -591,6 +591,18 @@ adapter via `direct:trigger` to insert a row into the table `foo`.
 Immediately after that, it reads one row from the table and outputs the
 result. You should see `bar=hi, baz=world` in standard output.
 
+### Messaging Bridge
+
+A specialized form of [Channel Adapter](#channel-adapter), messaging bridge
+connects one messaging system to another. Typically, they also translate
+message formats from one messaging solution to the other, e.g., translate
+Java MQ message format in source messaging system to MSMQ message format
+in receiving messaging system. Apache Camel achieves this in the route builder:
+
+```kotlin {linenos=table}
+    from("mq:queue:foo").to("activemq:queue:foo")
+```
+
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
