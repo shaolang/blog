@@ -603,6 +603,27 @@ in receiving messaging system. Apache Camel achieves this in the route builder:
     from("mq:queue:foo").to("activemq:queue:foo")
 ```
 
+### Message Bus
+
+Message bus is an integration architecture that enables applications to
+coordinate in loosely coupled way via messaging. Message bus allows
+applications to continue running with minimal impact when some others are not.
+This also allows applications to be added to or removed from the enterprise
+with minimal impact.
+
+Message bus is a combination of a common data model, a common command set, and
+a messaging infrastructure to allow different systems to communicate through
+a shared set of interfaces. A message bus forms a simple, yet useful
+service-oriented architecture, where each service has at least one request
+channel that accepts requests of an agreed format, and probably a
+corresponding reply channel that supports a specified reply format.
+
+All applications using the message bus must use the same
+[Canonical Data Model](#canonical-data-model); they may also need to depend
+on [Message Routers](#message-router) to route the message to the appropriate
+destination. Applications not designed to interface with a messaging system
+may require [Channel Adapters](#channel-adapter) and
+[Service Activators](#service-activator).
 
 [^1]: [Camel in Action, 2nd Edition][cia2e] actually did recommend
       reading the EIP book shortly into chapter 1, but I ignored that
