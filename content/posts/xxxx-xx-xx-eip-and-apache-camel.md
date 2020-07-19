@@ -124,6 +124,15 @@ has a `pattern` property that indicates whether the exchange type should
 be an `InOut`, `InOnly`, or `InOptionalOut` (enum values from
 [`org.apache.camel.ExchangePattern`][exchangePattern]).
 
+### Command Message
+Command Message is an implementation of the well-known
+[Command pattern][gof-command-pattern] from the Design Patterns book.
+It is simply a regular message that happens to contain a command. A
+[Simple Object Access Protocol (SOAP)][soap] is a command message.
+
+To ensure each command is only consumed and invoked once, command messages
+are usually sent on a [Point-to-Point Channel](#point-to-point-channel).
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
@@ -638,6 +647,8 @@ may require [Channel Adapters](#channel-adapter) and
 [cia2e]: https://www.manning.com/books/camel-in-action-second-edition
 [exchange]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/Exchange.html
 [exchangePattern]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/ExchangePattern.html
+[gof-command-pattern]: https://en.wikipedia.org/wiki/Command_pattern
+[soap]: https://en.wikipedia.org/wiki/SOAP
 [activemq]: https://activemq.apache.org
 [defaulterrorhandler]: https://camel.apache.org/manual/latest/error-handler.html#_defaulterrorhandler
 [components]: https://camel.apache.org/components/latest/index.html
