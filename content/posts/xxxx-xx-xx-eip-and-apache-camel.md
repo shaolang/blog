@@ -228,6 +228,50 @@ part of the data being transmitted. The message header may need to include
 the [Correlation Identifier](#correlation-identifier) to inform the requestor
 which request the reply is for.
 
+### Correlation Identifier
+Other than switching to synchronous [Request-Reply](#request-reply), making
+the assumption that the requestor will receive the replies in the same order
+as the request may not be practical: not all requests require the same amount
+of time to process and messaging systems do not guarantee message delivery
+order. Therefore, specifying the Correlation Identifier in the message header--
+probably alongside [Return Address](#return-address)--to help the requestor
+match the reply to the request makes asynchronous
+[Request-Reply](#request-reply) work.
+
+There are six parts to Correlation Identifier:
+
+1. Requestor: the application that sends the request
+2. Replier: the application that receives the request and responds with a reply
+3. Request: a message the requestor sends that contains the request ID
+4. Reply: a message the replier sends that contains the correlation ID
+5. Request ID: a token in the request that uniquely identifies the request
+6. Correlation ID: a token in the reply that has the same value as the
+   request ID in the request
+
+The simplest way is to use the same business object ID (whatever that maybe) as
+the request ID; however, if the business object ID could expose sensitive
+information--e.g., it contains widely known customer IDs--the requestor could
+maintain a lookup table to map the (generic) request/correlation ID to the
+business object ID when it processes the replies.
+
+Using the message ID as the request/correlation ID typically is sufficient,
+i.e., there's no need to have a separate field in the message header for
+request/correlation ID. However, if there is a need to reconstruct
+conversations from a series of related [Request-Replies](#request-reply),
+having an explicit correlation ID field would help, as shown below:
+
+```
++- A: Request -+     +-  B: Reply  -+     +-  A: Reply  -+     +-  B: Reply  -+
+| Msg ID: 123  |<-\  | Msg ID: 234  |<-\  | Msg ID: 345  |<-\  | Msg ID: 456  |
+| Corr ID: nil |   \-| Corr ID: 123 |   \-| Corr ID: 234 |   \-| Corr ID: 345 |
+| Msg Body...  |     | Msg Body...  |     | Msg Body...  |     | Msg Body...  |
++--------------+     +--------------+     +--------------+     +--------------+
+```
+
+Note that Correlation Identifier is used for matching a reply to its request,
+[Message Sequence](#message-sequence) identifier is used for specifying the
+position of the message within a series of messages from the same sender.
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
