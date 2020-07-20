@@ -133,6 +133,25 @@ It is simply a regular message that happens to contain a command. A
 To ensure each command is only consumed and invoked once, command messages
 are usually sent on a [Point-to-Point Channel](#point-to-point-channel).
 
+### Document Message
+
+Document Message is just data the sender sends to the receiver and let
+the receiver do whatever it wants to the content. For document messages,
+[Guaranteed Delivery](#guaranteed-delivery) is probably more important
+than [Message Expiration](#message-expiration).
+
+One of the benefits of sending document messages in a messaging system is that
+receivers--when there are more than one expecting the receipt--do not need to
+coordinate among themselves to delete the document when they've received
+the file; if file transfer were to be used, the receivers need to somehow know
+which one of them is the last one picking up the file and be responsible
+for deleting it.
+
+Document messages are usually sent using a
+[Point-to-Point Channel](#point-to-point-channel), but could be broadcast via
+[Publish-Subscribe Channel](#publish-subscribe-channel). Document messages
+are usually the replies to the requests in [Request-Reply](#request-reply).
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
