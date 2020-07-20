@@ -211,6 +211,23 @@ inform the replier where to send the reply and a
 [Correlation Identifier](#correlation-identifier) that specifies which
 request this reply is for.
 
+### Return Address
+Making the requestor explicitly specify the reply channel to use has a lot
+of advantages over other alternatives:
+
+1. Processing replies may actually take place at an associated callback
+   processor, i.e., not by the requestor itself.
+2. Hard-coding return addresses makes the messaging system fragile to changes.
+3. Inferring the return address based on the source is similarly fragile.
+
+Another reason for explicit return address is that the (single) replier may be
+responding to requests from multiple requestors.
+
+The message header should store the return address, not the body as it's not
+part of the data being transmitted. The message header may need to include
+the [Correlation Identifier](#correlation-identifier) to inform the requestor
+which request the reply is for.
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
