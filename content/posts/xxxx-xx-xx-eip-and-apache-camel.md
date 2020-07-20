@@ -134,7 +134,6 @@ To ensure each command is only consumed and invoked once, command messages
 are usually sent on a [Point-to-Point Channel](#point-to-point-channel).
 
 ### Document Message
-
 Document Message is just data the sender sends to the receiver and let
 the receiver do whatever it wants to the content. For document messages,
 [Guaranteed Delivery](#guaranteed-delivery) is probably more important
@@ -151,6 +150,32 @@ Document messages are usually sent using a
 [Point-to-Point Channel](#point-to-point-channel), but could be broadcast via
 [Publish-Subscribe Channel](#publish-subscribe-channel). Document messages
 are usually the replies to the requests in [Request-Reply](#request-reply).
+
+### Event Message
+When an application need to notify others of an event, it sends an event
+message whose content could be empty or contain anything, e.g., object, XML
+document. Unlike [Document Messages](#document-message), Event messages
+probably deem [Message Expirations](#message-expiration) to be more important
+than [Guaranteed Delivery](#guaranteed-delivery).
+
+Event messages could be delivered via the push or pull model:
+
+* Push: event message contains the information about the change as part of its
+  notification.
+* Pull: event message has an empty body and requires interested receivers to
+  follow up with [Request-Reply](#request-reply) to get the information on the
+  change
+
+The disadvantage of push model is that all receivers have to take in
+potentially large messages in every update, even if they are not interested
+in the content changed. Pull model's disadvantage is that it makes the
+applications chatty.
+
+Event messages are usually broadcast via
+[Publish-Subscribe Channel](#publish-subscribe-channel). Unlike
+[Document Messages](#document-message), subscribers could ignore event messages
+if they could not process the event messages in time, therefore, subscribers
+are usually not [Durable Subscribers](#durable-subscribers).
 
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
