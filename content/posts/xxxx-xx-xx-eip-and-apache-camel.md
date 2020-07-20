@@ -128,7 +128,7 @@ be an `InOut`, `InOnly`, or `InOptionalOut` (enum values from
 Command Message is an implementation of the well-known
 [Command pattern][gof-command-pattern] from the Design Patterns book.
 It is simply a regular message that happens to contain a command. A
-[Simple Object Access Protocol (SOAP)][soap] is a command message.
+[Simple Object Access Protocol (SOAP)][soap] message is a command message.
 
 To ensure each command is only consumed and invoked once, command messages
 are usually sent on a [Point-to-Point Channel](#point-to-point-channel).
