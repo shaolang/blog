@@ -177,6 +177,40 @@ Event messages are usually broadcast via
 if they could not process the event messages in time, therefore, subscribers
 are usually not [Durable Subscribers](#durable-subscribers).
 
+### Request-Reply
+Because channels are unidirectional, Request-Reply requires a pair of
+channels: one for request, the other for reply. The request channel can
+be a [Point-to-Point Channel](#point-to-point-channel) or a
+[Publish-Subscribe Channel](#publish-subscribe-channel); the reply channel
+is almost always point-to-point because it doesn't make sense to broadcast
+replies.
+
+Requestor in request-reply could receive the reply in one of the following
+two modes:
+
+* Synchronous: the requestor blocks its current thread to wait for reply.
+* Asynchronous: the requestor sets up a callback for the reply in a separate
+  thread, thus allowing multiple outstanding requests to share a single
+  reply channel and reply thread to process replies.
+
+Requests could be a:
+
+* RPC sent as a [Command Message](#command-message) that describes the
+  function to invoke and expects a [Document Message](#document-message)
+  as reply which could be the return value or the exception thrown
+* Query sent as a [Command Message](#command-message) that contains the
+  query and expects the reply to be the results of the query as either a
+  [Document Message](#document-message), or a
+  [Message Sequence](#message-sequence).
+* Notify/Acknowledge sent as an [Event Message](#event-message) that notifies
+  and expects a [Document Message](#document-message) as acknowledgement
+  to the notification.
+
+Request messages should contain a [Return Address](#return-address) to
+inform the replier where to send the reply and a
+[Correlation Identifier](#correlation-identifier) that specifies which
+request this reply is for.
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
