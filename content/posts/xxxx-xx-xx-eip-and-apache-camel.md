@@ -272,6 +272,52 @@ Note that Correlation Identifier is used for matching a reply to its request,
 [Message Sequence](#message-sequence) identifier is used for specifying the
 position of the message within a series of messages from the same sender.
 
+### Message Sequence
+Message Channels that need to send arbitrarily large messages could send
+the data as a Message Sequence and mark each message with sequence
+identification fields. Message sequence use three additional identification
+fields:
+
+1. Sequence identifier: Distinguishes each message cluster from the others
+2. Position identifier: Indicates the message's position within the cluster
+3. Size or End indicator: Specifies the number of messages in the cluster,
+   or marks the last message in the cluster (the position identifier of this
+   last message is the implied size of the cluster)
+
+Think 1 of n, 2 of n, where 1 and 2 are the position identifier and n is the
+size indicator.
+
+If the receiver expects a Message Sequence, every message it receives should
+be sent as part of a sequence, even for single-part messages. Otherwise,
+the receiver may confuse such single-part messages as invalid (due to
+missing fields) and send them to
+[Invalid Message Channel](#invalid-message-channel).
+
+When a receiver receives only some of the message, it should reroute the ones
+it receives to the [Invalid Message Channel](#invalid-message-channel).
+
+An application may choose to use a [Transactional Client](#transactioal-client)
+for sending and receiving message sequences. For senders, this means none of
+the messages are delivered until all of them have been sent. For receivers,
+this means it will consume the messages only when all have been received;
+otherwise, the receiver can choose to rollback the transaction so that the
+receiver can consume the messages again later.
+
+When a Message Sequence is the reply message in a
+[Request-Reply](#request-reply), the sequence identifier are usually the
+same as the [Correlation Identifier](#correlation-identifier).
+
+Message Sequence is not compatible with
+[Competing Consumers](#competing-consumer) nor
+[Message Dispatcher](#message-dispatcher), as different consumers/performers
+may receive different messages in the sequence; because none of such receivers
+can receive the entire sequence, they can't reassemble the message in entirety.
+
+[Claim Check](#claim-check) is an alternative to Message Sequence: two
+applications access a common database or file system for document
+transfer/receipt, and the sender sends the [Claim Check](#claim-check) to
+the receiver for it to "claim" the document from the common store.
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
