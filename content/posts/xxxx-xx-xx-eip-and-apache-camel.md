@@ -318,6 +318,28 @@ applications access a common database or file system for document
 transfer/receipt, and the sender sends the [Claim Check](#claim-check) to
 the receiver for it to "claim" the document from the common store.
 
+### Message Expiration
+Although messaging systems guarantee delivery, they can't guarantee how long
+they'll take to deliver. When messages are useful only when the receivers
+receive them within the duration after the senders send them, senders should
+specify the Message Expiration (aka time-to-live) in the message in either
+relative or absolute terms:
+
+* Relative: the duration the message is valid for; messaging systems and
+  receivers need to use the sent timestamp to determine the absolute
+  time the message will expire
+* Absolute: the exact timestamp the message will expire
+
+When it hasn't delivered the message before expiry, messaging system should
+either reroute expired messages to [Dead Letter Channel](#dead-letter-channel),
+or simply discard them. Likewise, receivers receiving expired messages should
+reroute them to [Invalid Message Channel](#invalid-message-channel).
+
+Note that in [Request-Reply](#request-reply), Message Expiration may not work
+that well: the requestor may never receive the reply. If leaving out the
+expiration is impossible, the requestor may need to be designed to handle
+the case where it may never receive the expected replies.
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
