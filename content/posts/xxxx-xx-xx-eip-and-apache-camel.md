@@ -340,6 +340,27 @@ that well: the requestor may never receive the reply. If leaving out the
 expiration is impossible, the requestor may need to be designed to handle
 the case where it may never receive the expected replies.
 
+### Format Indicator
+The format of the messages will inevitably change over time due to
+new applications having new format requirements, better ways to structure
+the data, etc. However, applications participating in messaging
+evolve at different rates (maybe even not at all).
+
+Creating different channels for different formats adds to configuration
+complexity and design duplication. A better solution is to use the same
+channel for both old and new formats and differentiate the formats by
+specifying the Format Indicator. The Format Indicator allows the sender
+to inform the receivers the format of the message. There are three
+alternatives for implementing:
+
+1. Version Number: A value that uniquely identifies the format; both sender
+   and receiver must agree on the format on which format is designated by a
+   particular indicator.
+2. Foreign Key: A unique ID that both sender and receiver can reference to
+   that specifies document schema, e.g.,
+   [Document Type Declaration (DTD)][dtd] used by XML.
+3. Format Document: a schema of the format embedded in the message.
+
 ## Message Channels
 Most of the time, the number of channels to set up is predefined--agreed
 between applications upfront--as opposed to created dynamically and
@@ -856,6 +877,7 @@ may require [Channel Adapters](#channel-adapter) and
 [exchangePattern]: https://www.javadoc.io/doc/org.apache.camel/camel-api/3.3.0/org/apache/camel/ExchangePattern.html
 [gof-command-pattern]: https://en.wikipedia.org/wiki/Command_pattern
 [soap]: https://en.wikipedia.org/wiki/SOAP
+[dtd]: https://en.wikipedia.org/wiki/Document_Type_Definition
 [activemq]: https://activemq.apache.org
 [defaulterrorhandler]: https://camel.apache.org/manual/latest/error-handler.html#_defaulterrorhandler
 [components]: https://camel.apache.org/components/latest/index.html
