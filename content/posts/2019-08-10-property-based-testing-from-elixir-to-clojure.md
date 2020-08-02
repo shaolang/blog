@@ -141,8 +141,7 @@ implementing a CSV parser.
 
 {{< highlight clojure "linenos=table" >}}
 (ns pbtic.birthday.csv
-  (:require [clojure.data.csv :as csv]
-            [clojure.string :as str]))
+  (:require [clojure.data.csv :as csv]))
 
 (defn encode [ms]
   (let [ks    (-> ms first keys)
@@ -480,8 +479,7 @@ written).
 
 {{< highlight clojure "linenos=table" >}}
 (ns pbtic.birthday
-  (:require [pbtic.birthday.csv :as csv]
-            [pbtic.birthday.employee :as employee]
+  (:require [pbtic.birthday.employee :as employee]
             [pbtic.birthday.mail-tpl :as mail-tpl])
   (:import [java.time LocalDate]))
 
