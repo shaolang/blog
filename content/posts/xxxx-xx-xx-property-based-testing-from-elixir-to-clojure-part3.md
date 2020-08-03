@@ -90,10 +90,66 @@ simplicity, i.e., it's entirely possible to generate the size using
 `(gen/fmap inc gen/nat)`.[^1] `known-keys` is a small set of keywords to
 help the `gen-key` generator in generating repeated keys to force the
 test to exercise code related to replacing and finding values of known
-keys.
+keys. Now that the trivial stuff are done, let's start writing the
+property:
+
+```clojure {linenos=table}
+(deftest cache-specification-test
+  (is (specification-correct? cache-specification)))
+```
+
+That's it: `stateful-check.core/specification-correct?` checks the
+correctness of the given specification:
+
+```clojure {linenos=table}
+(def cache-specification
+  {:commands          {:cache!  #'cache-command
+                       :find    #'find-command
+                       :flush!  #'flush-command}
+   :generate-command  (fn [_state]
+                        (gen/frequency [[1 (gen/return :cache!)]
+                                        [3 (gen/return :find)]
+                                        [1 (gen/return :flush!)]]))
+   :initial-state     (constantly [])
+   :setup             #(c/init! cache-size)})
+```
+
+The specification lays out the following:[^2]
+
+* `:commands` specifies map of commands stateful-check can generate the
+  sequence of actions
+* `:generate-command` determines the frequency of the commands to generate
+  (and in this case, the frequencies match the ones in the book)
+* `:setup` performs one-time setup tasks to prepare the system-under-test
+  (and in this case, it initializes the cache by calling `pbtic.cache/init!`)
+* `initial-state` initializes the model/state that is used extensively
+  during generation and execution
+
+When `:setup` is given in the specification, the result of running the
+setup will also be given to `initial-state`'s function; such behavior is
+the reason why `initial-state` in the specification above is given as
+`(constantly [])`, instead of just `vector`. If I were to do the latter,
+as in the following:
+
+```clojure {linenos=table}
+(def another-specification
+  {:commands      {:action #'action-command
+                   :query  #'query-command}
+   :initial-state vector
+   :setup         (constantly {:hello :world})})
+```
+
+The initial state won't be an empty vector but a vector that contains
+the hash-map, i.e., `[{:hello, :world}]`.[^3]
+
+Such behavior is useful in certain scenarios, e.g., when the model/state
+needs to know the state of the system-under-test in order to initialize
+correctly.
 
 [^1]: This expression creates a generator that generates positive numbers.
-
+[^2]: You can read more about the specifications
+      at https://github.com/czan/stateful-check/blob/master/doc/specification.org#system-specifications
+[^3]: This bit me, leaving me bewildered for days, when I was learning stateful-check :joy:
 
 [prev]: ../2020-07-10-property-based-testing-from-elixir-to-clojure-part2/
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
