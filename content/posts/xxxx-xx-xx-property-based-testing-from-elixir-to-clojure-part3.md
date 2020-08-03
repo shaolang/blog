@@ -146,6 +146,35 @@ Such behavior is useful in certain scenarios, e.g., when the model/state
 needs to know the state of the system-under-test in order to initialize
 correctly.
 
+Back to writing the property. I've chosen to use a vector as the model
+to check against the cache: at anytime, the vector should hold up to 10
+hash-maps, where each hash-map takes the form of `{:k k :v v}`. The easiest
+command to implement is `flush-command`, which is shown below:
+
+```clojure {linenos=table}
+(def flush-command
+  {:command       c/flush!
+   :requires      (fn [state] (pos? (count state)))
+   :next-state    (constantly [])
+   :postcondition (fn [_prev-state next-state _args _result]
+                    (zero? (count next-state)))})
+```
+
+Unlike [PropEr][proper]/[propcheck][propcheck], stateful-check allows
+specifying `:requires` as the precondition for generating the command.
+When things are in place, `:command` is run, followed by `:next-state`.
+In this case, `:next-state` replaces the model/state with an empty vector,
+Finally, `:postcondition` checks the state (specifically, `next-state`,
+not `prev-state`) to confirm the vector is empty. Strictly speaking,
+post-condition for `flush-command` isn't necessary; I'm specifying it here
+for instructional purposes.
+
+Other than `:command`, `:requires`, `:next-state`, and `postcondition`, there
+are also `:args` (that generates the arguments for calling the command),
+`:precondition` (that allows checking the model/state and the generated
+arguments to confirm whether it is valid to run the command with the given
+state and arguments).
+
 [^1]: This expression creates a generator that generates positive numbers.
 [^2]: You can read more about the specifications
       at https://github.com/czan/stateful-check/blob/master/doc/specification.org#system-specifications
@@ -157,3 +186,5 @@ correctly.
 [erlang-term]: http://erlang.org/doc/reference_manual/data_types.html#term
 [stateful-check]: https://github.com/czan/stateful-check
 [test.check]: https://github.com/clojure/test.check
+[proper]: https://proper-testing.github.io/index.html
+[propcheck]: https://github.com/alfert/propcheck
