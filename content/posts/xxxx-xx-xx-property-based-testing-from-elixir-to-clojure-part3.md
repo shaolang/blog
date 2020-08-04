@@ -228,12 +228,70 @@ retrieves the value of that entry and compare against `result` returned by
 the system-under-test. Any falsy values `:postcondition` returns will
 fail the test; thus, think `:postcondition` as assertions in regular tests.
 
+Running the test will show the implementation meets the specification:
+
+```bash
+$ lein test pbtic.cache-test
+
+lein test pbtic.cache-test
+
+Ran 1 tests, containing 1 assertions.
+0 failures, 0 errors.
+```
+
+## Testing Parallel Executions
+Similar to [PropEr][proper]/[propcheck][propcheck], stateful-check generates
+the commands, picks a common root of operations[^5], and splits the remainder
+up in concurrent timelines. After executing the common root sequentially,
+stateful-check runs the concurrent ones in different threads.
+
+Setting up such specification is just an option map away for stateful-check:
+
+```clojure {linenos=table}
+(deftest cache-specification-parallel-test
+  (is (specification-correct? cache-specification {:gen {:threads 2}
+                                                   :max {:tries 100}})))
+```
+
+Because real threads are used, no additional "assistance" is needed to
+get the something similar to following output in the first parallel test run:
+
+```bash
+$ lein test pbtic.cache-test
+
+lein test pbtic.cache-test
+
+lein test :only pbtic.cache-test/cache-specification-parallel-test
+
+FAIL in (cache-specification-parallel-test) (core.clj:192)
+Sequential prefix:
+
+Thread a:
+  #<1a> = (:cache! :a 0)  = {:index 1, :max-items 10, 1 [:a 0]}
+
+Thread b:
+  #<1b> = (:cache! :konichiwa 0)  = {:index 1, :max-items 10, 1 [:konichiwa 0]}
+  #<4b> = (:find :konichiwa)  = nil
+
+Seed: 1596584000377
+  Note: Test cases with multiple threads are not deterministic, so using the
+        same seed does not guarantee the same result.
+
+expected: all executions to match specification
+  actual: the above execution did not match the specification
+
+Ran 2 tests containing 2 assertions.
+1 failures, 0 errors.
+Tests failed.
+```
+
 [^1]: This expression creates a generator that generates positive numbers.
 [^2]: You can read more about the specifications
       at https://github.com/czan/stateful-check/blob/master/doc/specification.org#system-specifications
 [^3]: This bit me, leaving me bewildered for days, when I was learning stateful-check :joy:
 [^4]: Not that it's a bad thing but the defaults sometimes left me wondering why
       my `:post-condition` isn't being run :facepalm:
+[^5]: Note that it may also not pick any thing at all for the common root.
 
 [prev]: ../2020-07-10-property-based-testing-from-elixir-to-clojure-part2/
 [pbtpee]: https://pragprog.com/book/fhproper/property-based-testing-with-proper-erlang-and-elixir
