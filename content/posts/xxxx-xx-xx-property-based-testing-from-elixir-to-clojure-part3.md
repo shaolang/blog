@@ -193,6 +193,25 @@ earlier means skipping the argument generation step. After running,
 Strictly speaking, `:postcondition` isn't necessary for this; I added it
 for instructional purposes.
 
+```clojure {linenos=table}
+(def cache-command
+  {:command     c/cache!
+   :args        (fn [_state] [gen-key gen-val])
+   :next-state  (fn [state [k v] _]
+                  (let [entry   {:k k :v v}
+                        [x y]   (split-with #(not= k (:k %)) state)
+                        nstate  (if (empty y)
+                                  (conj state entry)
+                                  (vec (concat x [entry] (next y))))]
+                    (if (> (count nstate) cache-size)
+                      (vec (next nstate))
+                      nstate)))})
+```
+
+Bulk of `cache-command`'s value lies in `:next-state` that updates the
+model/state; it mimics the behaviors of the system-under-test, i.e.,
+appends when entry is new and number of items is less than 10, replaces when
+entry is existing, and drops older entry when number of items is more than 10.
 
 [^1]: This expression creates a generator that generates positive numbers.
 [^2]: You can read more about the specifications
