@@ -213,6 +213,21 @@ model/state; it mimics the behaviors of the system-under-test, i.e.,
 appends when entry is new and number of items is less than 10, replaces when
 entry is existing, and drops older entry when number of items is more than 10.
 
+```clojure {linenos=table}
+(def find-command
+  {:command       c/find
+   :args          (fn [_] [gen-key])
+   :postcondition (fn [state _ [k] result]
+                    (= result (:v (some #(when (= k (:k %)) %) state))))})
+```
+
+`find-command` is where the test checks the system-under-test against the
+model via `:postcondition`: it gets the first entry (there should be one
+only) with the matching key value from the model by using `some`,
+retrieves the value of that entry and compare against `result` returned by
+the system-under-test. Any falsy values `:postcondition` returns will
+fail the test; thus, think `:postcondition` as assertions in regular tests.
+
 [^1]: This expression creates a generator that generates positive numbers.
 [^2]: You can read more about the specifications
       at https://github.com/czan/stateful-check/blob/master/doc/specification.org#system-specifications
