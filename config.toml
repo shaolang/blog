@@ -7,7 +7,7 @@ ignoreFiles = [ "\\.swp$" ]
 [params]
 description = "Biz analyst by day, coder by night, ML practitioner in the making"
 copyright = "Creative Commons Attribution-ShareAlike 4.0 International"
-social = {github = "https://github.com/shaolang", linkedin = "https://www.linkedin.com/in/shaolang", twitter = "https://www.twitter.com/shaolang", rss = "index.xml"}
+social = {exercism = "https://exercism.io/profiles/shaolang", github = "https://github.com/shaolang", linkedin = "https://www.linkedin.com/in/shaolang", twitter = "https://www.twitter.com/shaolang", rss = "index.xml"}
 
 [taxonomies]
 tag = "tags"
