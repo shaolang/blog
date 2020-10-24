@@ -18,5 +18,14 @@ List of interesting/helpful/queer/etc links:
 ## Misc
 
 - [AWS services explained in one line each](https://adayinthelifeof.nl/2020/05/20/aws.html)
+- [Git - When to Merge vs. When to Rebase](https://www.derekgourlay.com/blog/git-when-to-merge-vs-when-to-rebase/)
+  - Rule of thumb:
+    - When pulling changes from origin/develop (or origin/master) onto local develop, use rebase
+    - When finishing a feature branch, merge the changes back to develop (or master)
+  - When to use what:
+    - `git pull origin` when no local changes
+    - `git pull --rebase origin` when there are local changes (but latest commit is not a merged with feature branch)
+    - `git merge --no-ff <branch>` when merging feature branch back to master
+    - `git fetch origin` then `git rebase -r origin/<branch>` when there are local changes (and last commit is a merge with feature branch)
 - [On Coding, Ego, and Attention](https://josebrowne.com/on-coding-ego-and-attention): on self-improvement by not making work personal
 - [pytz: The Fastest Footgun in the West](https://blog.ganssle.io/articles/2018/03/pytz-fastest-footgun.html): why dateutil is preferred over pytz
