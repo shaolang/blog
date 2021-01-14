@@ -1,7 +1,6 @@
 ---
 title: "SQLite3: Use Nth Value in First Record of Selected Groups"
 date: 2021-01-14T14:09:53+08:00
-draft: true
 allowComments: true
 tags: [sql, sqlite3]
 ---
