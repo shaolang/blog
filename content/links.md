@@ -28,4 +28,5 @@ List of interesting/helpful/queer/etc links:
     - `git merge --no-ff <branch>` when merging feature branch back to master
     - `git fetch origin` then `git rebase -r origin/<branch>` when there are local changes (and last commit is a merge with feature branch)
 - [On Coding, Ego, and Attention](https://josebrowne.com/on-coding-ego-and-attention): on self-improvement by not making work personal
+- [Prioritize Software Features By Mapping Complexity & Value With a Feature Matrix](https://spin.atomicobject.com/2021/01/27/prioritize-software-features/)
 - [pytz: The Fastest Footgun in the West](https://blog.ganssle.io/articles/2018/03/pytz-fastest-footgun.html): why dateutil is preferred over pytz
