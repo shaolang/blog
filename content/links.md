@@ -10,6 +10,10 @@ List of interesting/helpful/queer/etc links:
 - [Practical Data Coercion with Prismatic/schema](https://camdez.com/blog/2015/08/27/practical-data-coercion-with-prismatic-schema): especially on how to make multiple coercion matchers work together
 - [Taming Advanced Compilation Bugs in ClojureScript Projects](https://dev.solita.fi/2020/06/25/taming-cljs-advanced-compilation.html)
 
+# Rust
+- [A Survey of Rust GUI Libraries (as of 21 Aug 2020)](https://www.boringcactus.com/2020/08/21/survey-of-rust-gui-libraries.html)
+- [Rust GUI: Introduction, a.k.a. the state of Rust GUI libraries (as of Jan 2021)](https://dev.to/davidedelpapa/rust-gui-introduction-a-k-a-the-state-of-rust-gui-libraries-as-of-january-2021-40gl)
+
 ## SQL
 
 - [How do I insert a row which contains a foreign key?](https://dba.stackexchange.com/a/46415): with concise and smart SQL statement to insert many records
