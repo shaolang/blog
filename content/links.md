@@ -22,6 +22,7 @@ List of interesting/helpful/queer/etc links:
 ## Misc
 
 - [AWS services explained in one line each](https://adayinthelifeof.nl/2020/05/20/aws.html)
+- [Framework for writing good documentation](https://documentation.divio.com)
 - [Git - When to Merge vs. When to Rebase](https://www.derekgourlay.com/blog/git-when-to-merge-vs-when-to-rebase/)
   - Rule of thumb:
     - When pulling changes from origin/develop (or origin/master) onto local develop, use rebase
