@@ -22,7 +22,7 @@ The rest of the dependencies are stated in the tutorial.
 
 ## Getting a simple React app running
 
-To ensure the setup is working, let's create the scaffold:
+Let's create the scaffold to kick-start:
 
 ```bash
 $ mkdir acme
@@ -59,9 +59,9 @@ ClojureScript compiler. Run `npx shadow-cljs init` to generate the skeleton
              :modules {:main {:init-fn acme.core/init}}}}}
 ```
 
-Line 8 adds [reagent][reagent] as a dependency; lines 11 and 12 creates the
-profile `:frontend` (that matches the npm script's `shadowcljs watch` command).
-In this profile, it specifies the build targets the browser and it should
+Line 8 adds [Reagent][reagent] as a dependency; lines 11 and 12 create the
+profile `:frontend` (that matches the npm script's `shadow-cljs watch` command).
+This profile specifies that the build targets the browser and should
 generate the file `main.js` ('cos of the `:main` key) that will invoke
 `acme.core/init` function at initialization. Let's implement `init` that uses
 a simple Reagent component in `src/main/acme/core.cljs`:
@@ -79,7 +79,7 @@ a simple Reagent component in `src/main/acme/core.cljs`:
 ```
 
 Simple enough: a custom `header` component that outputs the given text in
-a `h1` element and the `init` function that renders the header. To see this
+an `h1` element and the `init` function that renders the header. To see this
 glorious app render, create the `public/index.html` as follows:
 
 ```html {linenos=table, hl_lines=[9]}
@@ -98,8 +98,9 @@ glorious app render, create the `public/index.html` as follows:
 
 By default, Shadow-CLJS generates the output to `public/js`, hence the
 highlighted line (line 9). When the page is ready, `init` will run and
-renders the header. Before running `npm run dev`, add `dev-http` config
-to `shadow-cljs.edn` to set up a dev-server:
+renders the header component. Before running `npm run dev`, add `dev-http`
+to `shadow-cljs.edn` to configure the dev-server to listen to port 8080 and
+serve artifacts from `public` directory:
 
 ```clojure {linenos=table, hl_lines=[7]}
 ;; shadow-cljs configuration
@@ -118,8 +119,7 @@ to `shadow-cljs.edn` to set up a dev-server:
              :modules {:main {:init-fn acme.core/init}}}}}
 ```
 
-Line 7 configures a dev-server that listens at port 8080 and serves artifacts
-in `public` directory. With all these set up, run `npm run dev` and load
+With all these set up, run `npm run dev` and load
 the page `localhost:8080` in your favorite browser; you should see "Hello,
 World!":
 
