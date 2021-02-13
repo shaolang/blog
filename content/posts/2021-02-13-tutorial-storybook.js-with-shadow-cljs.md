@@ -125,6 +125,32 @@ World!":
 
 ![screenshot of "Hello, World!" rendered in browser](/images/2021-02-14-hello-world.png)
 
+## Some cleanup
+
+Before integrating with [Storybook.JS][storybook.js], let's do some cleaning
+up: extract the custom `header` component to its own namespace and make
+`acme.core/init` use that extracted one instead. First, the extracted
+component at `src/main/acme/components/header.cljs`:
+
+```clojure {linenos=table}
+(ns acme.components.header)
+
+(defn header [text]
+  [:h1 text])
+```
+
+Then, in `src/main/acme/core.cljs`, delete `header` function and `require`
+the header component namespace (as shown in line 2 below):
+
+```clojure {linenos=table, hl_lines=[2]}
+(ns acme.core
+  (:require [acme.components.header :refer [header]]
+            [reagent.dom :refer [render]]))
+
+(defn init []
+  (render [header "Hello, World!"]
+          (js/document.getElementById "app")))
+```
 
 [^1]: ClojureScript world also have the equivalent [devcards][devcards].
 
