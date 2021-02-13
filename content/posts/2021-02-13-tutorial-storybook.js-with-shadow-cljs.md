@@ -56,14 +56,74 @@ ClojureScript compiler. Run `npx shadow-cljs init` to generate the skeleton
 
  :builds
  {:frontend {:target  :browser
-             :modules {:main {:init-fn acme.main/init}}}}}
+             :modules {:main {:init-fn acme.core/init}}}}}
 ```
 
 Line 8 adds [reagent][reagent] as a dependency; lines 11 and 12 creates the
 profile `:frontend` (that matches the npm script's `shadowcljs watch` command).
 In this profile, it specifies the build targets the browser and it should
 generate the file `main.js` ('cos of the `:main` key) that will invoke
-`acme.main/init` function at initialization.
+`acme.core/init` function at initialization. Let's implement `init` that uses
+a simple Reagent component in `src/main/acme/core.cljs`:
+
+```clojure {linenos=table}
+(ns acme.core
+  (:require [reagent.dom :refer [render]]))
+
+(defn header [text]
+  [:h1 text])
+
+(defn init []
+  (render [header "Hello, World!"]
+          (js/document.getElementById "app")))
+```
+
+Simple enough: a custom `header` component that outputs the given text in
+a `h1` element and the `init` function that renders the header. To see this
+glorious app render, create the `public/index.html` as follows:
+
+```html {linenos=table, hl_lines=[9]}
+<!doctype html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Acme</title>
+  </head>
+  <body>
+    <div id='app'></div>
+    <script src='js/main.js'></script>
+  </body>
+</html>
+```
+
+By default, Shadow-CLJS generates the output to `public/js`, hence the
+highlighted line (line 9). When the page is ready, `init` will run and
+renders the header. Before running `npm run dev`, add `dev-http` config
+to `shadow-cljs.edn` to set up a dev-server:
+
+```clojure {linenos=table, hl_lines=[7]}
+;; shadow-cljs configuration
+{:source-paths
+  ["src/dev"
+   "src/main"
+   "src/test"]
+
+ :dev-http {8080 "public"}
+
+ :dependencies
+ [[reagent "1.0.0"]]
+
+ :builds
+ {:frontend {:target  :browser
+             :modules {:main {:init-fn acme.core/init}}}}}
+```
+
+Line 7 configures a dev-server that listens at port 8080 and serves artifacts
+in `public` directory. With all these set up, run `npm run dev` and load
+the page `localhost:8080` in your favorite browser; you should see "Hello,
+World!":
+
+![screenshot of "Hello, World!" rendered in browser](/images/2021-02-14-hello-world.png)
 
 
 [^1]: ClojureScript world also have the equivalent [devcards][devcards].
