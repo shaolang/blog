@@ -14,11 +14,14 @@ JavaScript ecosystem[^1]. This tutorial shows how we can use it with
 
 The tutorial uses the following:
 
-* [Node.js][node] version 14.15.4
 * [Java][java] version 11
+* [Node.js][node] version 14.15.4
+* [Reagent][reagent] version 1.0.0
 * [Shadow-CLJS][shadow-cljs] version 2.11.8
+* [Storybook.JS][storybook.js] version 6.1.17
 
-The rest of the dependencies are stated in the tutorial.
+Make sure the first two are installed prior the tutorial. The others will be
+installed along the way.
 
 ## Getting a simple React app running
 
