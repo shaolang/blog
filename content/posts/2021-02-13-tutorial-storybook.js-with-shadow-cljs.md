@@ -232,7 +232,11 @@ The snippet above uses [Component Story Format][csf], hence the need to
 add the metadata `^:export` to `default` and `HelloWorldHeader`. Because
 [Storybook.JS][storybook.js] operates on React components,
 `reactify-component` at line 7 turns the Reagent component into a React
-one.[^3]
+one.[^3] With all these preparation, run `npm run dev-stories` in one console,
+and `npm run storybook` in another. You should see [Storybook.JS][storybook.js]
+render our first story:
+
+![Rendering of Header component in Storybook](/images/2021-02-14-hello-world-in-storybook.png)
 
 For the fun of it, let' append another story to `header-stories`:
 
@@ -240,6 +244,8 @@ For the fun of it, let' append another story to `header-stories`:
 (defn ^:export GoodbyeSekaiHeader []
   (r/as-element [header "Goodbye, Sekai!"]))
 ```
+
+![Another rendering of Header component in Storybook](/images/2021-02-14-goodbye-sekai-in-storybook.png)
 
 ## Wrapping up
 
