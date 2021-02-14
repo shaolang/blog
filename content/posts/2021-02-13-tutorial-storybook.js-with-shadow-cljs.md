@@ -241,6 +241,14 @@ For the fun of it, let' append another story to `header-stories`:
   (r/as-element [header "Goodbye, Sekai!"]))
 ```
 
+## Wrapping up
+
+That concludes this tutorial on using [Storybook.JS][storybook.js] with
+[Shadow-CLJS][shadow-cljs]. In this case, we are using [Reagent][reagent]
+to create the components for [Storybook.JS][storybook.js] to render.
+It shouldn't be that difficult to adapt the setup to work with other
+ClojureScript rendering libraries, e.g., [Helix][helix].
+
 [^1]: ClojureScript world also have the equivalent [devcards][devcards].
 [^2]: Shadow-CLJS has a new `:esm` target that outputs to ES Modules, but as
       of this writing, it is cumbersome to use (the `^:export` metadata hint
@@ -257,3 +265,4 @@ For the fun of it, let' append another story to `header-stories`:
 [reagent]: https://reagent-project.github.io
 [csf]: https://storybook.js.org/docs/react/writing-stories/introduction#component-story-format
 [reagent-iwr]: https://cljdoc.org/d/reagent/reagent/1.0.0/doc/tutorials/interop-with-react
+[helix]: https://github.com/lilactown/helix
