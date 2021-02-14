@@ -155,7 +155,99 @@ the header component namespace (as shown in line 2 below):
           (js/document.getElementById "app")))
 ```
 
+## Adding Storybook.JS to the mix
+
+Time to add [Storybook.JS][storybook.js] to the project. Install it with
+`npm install --save-dev @storybook/react`; then create `.storybook/main.js`
+with the following contents to configure Storybook.JS to look for stories
+in `public/js/stories` directory:
+
+```javascript {linenos=table}
+module.exports = {
+  stories: ['../public/js/stories/**/*_stories.js'],
+};
+```
+
+Update `shadow-cljs.edn` to create a new profile specifically for stories
+that outputs the transpiled stories to `public/js/stories` too:
+
+```clojure {linenos=table, hl_lines=[4,16,17,18]}
+;; shadow-cljs configuration
+{:source-paths
+  ["src/dev"
+   "src/main"
+   "src/stories"
+   "src/test"]
+
+ :dev-http {8080 "public"}
+
+ :dependencies
+ [[reagent "1.0.0"]]
+
+ :builds
+ {:frontend {:target  :browser
+             :modules {:main {:init-fn acme.core/init}}}
+  :stories  {:target      :npm-module
+             :entries     [acme.stories.header-stories]
+             :output-dir  "public/js/stories"}}}
+```
+
+A few notable points on the new `:stories` profile:
+
+* `:entries` specifies the namespaces to transpile to stories; unlike
+  `:frontend` profile that specifies the target filename to output to
+  (`main.js`), [Shadow-CLJS][shadow-cljs] uses the namespace as the output
+  filename, e.g., `acme.stories.header_stories.js`
+* `:target` states the build should target npm module which works for
+  [Storybook.JS][storybook.js][^2]
+
+Add two script commands to `package.json` to ease the auto-compilation of
+stories and to start Storybook.JS:
+
+```json {linenos=table, hl_lines=[3,4]}
+"scripts": {
+  "dev": "shadow-cljs watch frontend",
+  "dev-stories": "shadow-cljs watch stories",
+  "storybook": "start-storybook"
+}
+```
+
+And finally, the story. Let' create a very simple story at
+`src\stories\acme\stories\header_stories.cljs` that says "Hello, World!":
+
+```clojure {linenos=table}
+(ns acme.stories.header-stories
+  (:require [acme.components.header :refer [header]]
+            [reagent.core :as r]))
+
+(def ^:export default
+  #js {:title     "Header Component"
+       :compoent  (r/reactify-component header)})
+
+(defn ^:export HelloWorldHeader []
+  (r/as-element [header "Hello, World!"]))
+```
+
+The snippet above uses [Component Story Format][csf], hence the need to
+add the metadata `^:export` to `default` and `HelloWorldHeader`. Because
+[Storybook.JS][storybook.js] operates on React components,
+`reactify-component` at line 7 turns the Reagent component into a React
+one.[^3]
+
+For the fun of it, let' append another story to `header-stories`:
+
+```clojure {linenos=table}
+(defn ^:export GoodbyeSekaiHeader []
+  (r/as-element [header "Goodbye, Sekai!"]))
+```
+
 [^1]: ClojureScript world also have the equivalent [devcards][devcards].
+[^2]: Shadow-CLJS has a new `:esm` target that outputs to ES Modules, but as
+      of this writing, it is cumbersome to use (the `^:export` metadata hint
+      isn't working, thus requiring the need to declare all exports in
+      `shadow-cljs.edn`.
+[^3]: Refer to Reagent's tutorial on [Interop with React][reagent-iwr]
+      for more information.
 
 [storybook.js]: https://storybook.js.org
 [shadow-cljs]: https://github.com/thheller/shadow-cljs
@@ -163,3 +255,5 @@ the header component namespace (as shown in line 2 below):
 [java]: https://jdk.java.net/java-se-ri/11
 [devcards]: https://github.com/bhauman/devcards
 [reagent]: https://reagent-project.github.io
+[csf]: https://storybook.js.org/docs/react/writing-stories/introduction#component-story-format
+[reagent-iwr]: https://cljdoc.org/d/reagent/reagent/1.0.0/doc/tutorials/interop-with-react
