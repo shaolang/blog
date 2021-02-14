@@ -256,10 +256,10 @@ It shouldn't be that difficult to adapt the setup to work with other
 ClojureScript rendering libraries, e.g., [Helix][helix].
 
 [^1]: ClojureScript world also has a similar [devcards][devcards].
-[^2]: Shadow-CLJS has a new `:esm` target that outputs to ES Modules, but as
-      of this writing, it is cumbersome to use (the `^:export` metadata hint
-      isn't working, thus requiring the need to declare all exports in
-      `shadow-cljs.edn`.
+[^2]: Shadow-CLJS has a new `:esm` target that outputs to ES Modules,
+      [but as of this writing][esm], it is cumbersome to use (the `^:export`
+      metadata hint isn't working, thus requiring the need to declare all
+      exports in `shadow-cljs.edn`.
 [^3]: Refer to Reagent's tutorial on [Interop with React][reagent-iwr]
       for more information.
 
@@ -272,3 +272,4 @@ ClojureScript rendering libraries, e.g., [Helix][helix].
 [csf]: https://storybook.js.org/docs/react/writing-stories/introduction#component-story-format
 [reagent-iwr]: https://cljdoc.org/d/reagent/reagent/1.0.0/doc/tutorials/interop-with-react
 [helix]: https://github.com/lilactown/helix
+[esm]: https://clojureverse.org/t/generating-es-modules-browser-deno/6116
