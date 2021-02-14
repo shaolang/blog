@@ -1,5 +1,5 @@
 ---
-title: "Tutorial: Storybook.JS with Shadow-CLJS"
+title: "Storybook.JS with Shadow-CLJS"
 date: 2021-02-13T11:39:43+08:00
 draft: true
 allowComments: true
