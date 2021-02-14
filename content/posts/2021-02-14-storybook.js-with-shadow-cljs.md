@@ -7,7 +7,8 @@ tags: [clojure, tutorial]
 
 [Storybook.JS][storybook.js] is a very interesting development tool from
 JavaScript ecosystem[^1]. This tutorial shows how we can use it with
-[Shadow-CLJS][shadow-cljs].
+[Shadow-CLJS][shadow-cljs]. The code resides at
+[storybook.js-with-shadow-cljs repo][repo].
 
 ## Prerequisites
 
@@ -264,6 +265,7 @@ ClojureScript rendering libraries, e.g., [Helix][helix].
 
 [storybook.js]: https://storybook.js.org
 [shadow-cljs]: https://github.com/thheller/shadow-cljs
+[repo]: https://github.com/shaolang/storybook.js-with-shadow-cljs
 [node]: https://nodejs.org/en
 [java]: https://jdk.java.net/java-se-ri/11
 [devcards]: https://github.com/bhauman/devcards
