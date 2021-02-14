@@ -24,8 +24,9 @@ Generated dna app
 
 _(Yeah, I know, I admit: I'm a noob)._
 
-The missing piece is configuring Mix. `mix test` is a task that _only_ runs
-tests; it does not compile _and_ run tests. Because the custom case
+The missing piece is configuring Mix. `mix test` is a task that _only_ compiles
+source under `lib` directory before running tests; it does not compile sources
+in `test` directory. Because the custom case in `tests`
 is a module[^1], Mix needs to know it has to include another directory
 when compiling tests:
 
@@ -48,6 +49,8 @@ end
 
 [`:elixirc_paths` defaults to `"lib"`][elixirc-paths-default], hence, the need
 to make changes similar to the highlighted lines to make custom cases work.
+
+_Edit: Update post to reflect new understanding of how Mix works [2021-02-14]_
 
 
 [^1]: The custom case module must end with a `.ex` extension, not `.exs`.
