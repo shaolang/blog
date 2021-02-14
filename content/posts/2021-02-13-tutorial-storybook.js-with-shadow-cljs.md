@@ -99,8 +99,8 @@ glorious app render, create the `public/index.html` as follows:
 </html>
 ```
 
-By default, Shadow-CLJS generates the output to `public/js`, hence the
-highlighted line (line 9). When the page is ready, `init` will run and
+By default, [Shadow-CLJS][shadow-cljs] generates the output to `public/js`,
+hence the highlighted line (line 9). When the page is ready, `init` will run and
 renders the header component. Before running `npm run dev`, add `dev-http`
 to `shadow-cljs.edn` to configure the dev-server to listen to port 8080 and
 serve artifacts from `public` directory:
@@ -230,8 +230,8 @@ And finally, the story. Let' create a very simple story at
 
 The snippet above uses [Component Story Format][csf], hence the need to
 add the metadata `^:export` to `default` and `HelloWorldHeader`. Because
-[Storybook.JS][storybook.js] operates on React components,
-`reactify-component` at line 7 turns the Reagent component into a React
+[Storybook.JS][storybook.js] operates on React components, `reactify-component`
+at line 7 turns the [Reagent][reagent] component into a React
 one.[^3] With all these preparation, run `npm run dev-stories` in one console,
 and `npm run storybook` in another. You should see [Storybook.JS][storybook.js]
 render our first story:
@@ -255,7 +255,7 @@ to create the components for [Storybook.JS][storybook.js] to render.
 It shouldn't be that difficult to adapt the setup to work with other
 ClojureScript rendering libraries, e.g., [Helix][helix].
 
-[^1]: ClojureScript world also have the equivalent [devcards][devcards].
+[^1]: ClojureScript world also has a similar [devcards][devcards].
 [^2]: Shadow-CLJS has a new `:esm` target that outputs to ES Modules, but as
       of this writing, it is cumbersome to use (the `^:export` metadata hint
       isn't working, thus requiring the need to declare all exports in
