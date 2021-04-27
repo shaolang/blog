@@ -23,6 +23,7 @@ List of interesting/helpful/queer/etc links:
 
 - [Avoiding GenServer bottlenecks](https://www.cogini.com/blog/avoiding-genserver-bottlenecks/)
 - [AWS services explained in one line each](https://adayinthelifeof.nl/2020/05/20/aws.html)
+- [CSS Tips](https://markodenic.com/css-tips/): CSS tips and tricks you won't see in most of the tutorials
 - [Framework for writing good documentation](https://documentation.divio.com)
 - [Elixir: a few things about GenStage I wish I knew some time ago](https://medium.com/@andreichernykh/elixir-a-few-things-about-genstage-id-wish-to-knew-some-time-ago-b826ca7d48ba)
 - [Git - When to Merge vs. When to Rebase](https://www.derekgourlay.com/blog/git-when-to-merge-vs-when-to-rebase/)
