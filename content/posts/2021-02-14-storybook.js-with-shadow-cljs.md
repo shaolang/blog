@@ -213,7 +213,7 @@ stories and to start Storybook.JS:
 ```
 
 And finally, the story. Let' create a very simple story at
-`src\stories\acme\stories\header_stories.cljs` that says "Hello, World!":
+`src/stories/acme/stories/header_stories.cljs` that says "Hello, World!":
 
 ```clojure {linenos=table}
 (ns acme.stories.header-stories
@@ -222,7 +222,7 @@ And finally, the story. Let' create a very simple story at
 
 (def ^:export default
   #js {:title     "Header Component"
-       :compoent  (r/reactify-component header)})
+       :component (r/reactify-component header)})
 
 (defn ^:export HelloWorldHeader []
   (r/as-element [header "Hello, World!"]))
