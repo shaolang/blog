@@ -16,6 +16,9 @@ List of interesting/helpful/queer/etc links:
 - [Avoiding GenServer bottlenecks](https://www.cogini.com/blog/avoiding-genserver-bottlenecks/)
 - [Elixir: a few things about GenStage I wish I knew some time ago](https://medium.com/@andreichernykh/elixir-a-few-things-about-genstage-id-wish-to-knew-some-time-ago-b826ca7d48ba)
 
+# Machine Learning/Artificial Intelligence
+- [5 Deep Learning Activation Functions You Need to Know](https://builtin.com/machine-learning/activation-functions-deep-learning)
+
 # Rust
 
 - [A Survey of Rust GUI Libraries (as of 21 Aug 2020)](https://www.boringcactus.com/2020/08/21/survey-of-rust-gui-libraries.html)
