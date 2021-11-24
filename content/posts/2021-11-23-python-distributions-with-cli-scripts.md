@@ -87,7 +87,19 @@ $ python -m build --wheel # builds only the wheel distribution
 
 All's done. To test this, create another virtual environment, install
 the distributable found in `dist/` with `pip`; this generates the executable
-`greet` in the environment's `Scripts/` directory.
+`greet` in the environment's `Scripts/` directory. Ignoring the generated
+artifacts, the directory should look like the following:
+
+```
+hello-world
+├── pyproject.toml
+├── setup.cfg
+└── src
+    └── hello
+        ├── __init__.py
+        └── scripts
+            └── cli.py
+```
 
 [^1]: According to [Configuring metadata][config-metadata], `setup.cfg` is
       the preferred format.
