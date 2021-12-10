@@ -11,6 +11,10 @@ List of interesting/helpful/queer/etc links:
 - [Practical Data Coercion with Prismatic/schema](https://camdez.com/blog/2015/08/27/practical-data-coercion-with-prismatic-schema): especially on how to make multiple coercion matchers work together
 - [Taming Advanced Compilation Bugs in ClojureScript Projects](https://dev.solita.fi/2020/06/25/taming-cljs-advanced-compilation.html)
 
+## CSS
+- [CSS Tips](https://markodenic.com/css-tips/): CSS tips and tricks you won't see in most of the tutorials
+- [Defensive CSS](https://ishadeed.com/article/defensive-css/)
+
 # Elixir
 
 - [Avoiding GenServer bottlenecks](https://www.cogini.com/blog/avoiding-genserver-bottlenecks/)
@@ -32,7 +36,6 @@ List of interesting/helpful/queer/etc links:
 ## Misc
 
 - [AWS services explained in one line each](https://adayinthelifeof.nl/2020/05/20/aws.html)
-- [CSS Tips](https://markodenic.com/css-tips/): CSS tips and tricks you won't see in most of the tutorials
 - [Framework for writing good documentation](https://documentation.divio.com)
 - [Git - When to Merge vs. When to Rebase](https://www.derekgourlay.com/blog/git-when-to-merge-vs-when-to-rebase/)
   - Rule of thumb:
