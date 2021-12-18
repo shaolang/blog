@@ -36,6 +36,7 @@ List of interesting/helpful/queer/etc links:
 ## Misc
 
 - [AWS services explained in one line each](https://adayinthelifeof.nl/2020/05/20/aws.html)
+- [Don't Start With Microservices - Monoliths Are Your Friend](https://arnoldgalovics.com/microservices-in-production/)
 - [Framework for writing good documentation](https://documentation.divio.com)
 - [Git - When to Merge vs. When to Rebase](https://www.derekgourlay.com/blog/git-when-to-merge-vs-when-to-rebase/)
   - Rule of thumb:
