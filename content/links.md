@@ -7,6 +7,7 @@ List of interesting/helpful/queer/etc links:
 ## Clojure
 
 - [Clojure, Faster](https://tech.redplanetlabs.com/2020/09/02/clojure-faster): optimizing Clojure when it matters
+- [Fast and Elegant Clojure](https://bsless.github.io/fast-and-elegant-clojure/)
 - [On The Nature Of Clojure Protocols](https://flexiana.com/2021/08/on-the-nature-of-clojure-protocols)
 - [Practical Data Coercion with Prismatic/schema](https://camdez.com/blog/2015/08/27/practical-data-coercion-with-prismatic-schema): especially on how to make multiple coercion matchers work together
 - [Taming Advanced Compilation Bugs in ClojureScript Projects](https://dev.solita.fi/2020/06/25/taming-cljs-advanced-compilation.html)
