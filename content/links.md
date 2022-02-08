@@ -55,4 +55,5 @@ List of interesting/helpful/queer/etc links:
     - `git merge --no-ff <branch>` when merging feature branch back to master
     - `git fetch origin` then `git rebase -r origin/<branch>` when there are local changes (and last commit is a merge with feature branch)
 - [On Coding, Ego, and Attention](https://josebrowne.com/on-coding-ego-and-attention): on self-improvement by not making work personal
+- [On finding the average of two unsigned integers without overflow](https://devblogs.microsoft.com/oldnewthing/20220207-00/?p=106223)
 - [Prioritize Software Features By Mapping Complexity & Value With a Feature Matrix](https://spin.atomicobject.com/2021/01/27/prioritize-software-features/)
