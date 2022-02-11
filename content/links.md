@@ -29,6 +29,7 @@ List of interesting/helpful/queer/etc links:
 - [Profiling and Analyzing Performance of Python Programs](https://martinheinz.dev/blog/64)
 - [pytz: The Fastest Footgun in the West](https://blog.ganssle.io/articles/2018/03/pytz-fastest-footgun.html): why dateutil is preferred over pytz
 - [Strict Python function parameters](https://sethmlarson.dev/blog/strict-python-function-parameters): using positional- and keyword-only parameters to make function usages uniform
+- [Testing and debugging Apache Airflow](https://godatadriven.com/blog/testing-and-debugging-apache-airflow/)
 
 # Rust
 
