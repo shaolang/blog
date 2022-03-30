@@ -58,3 +58,4 @@ List of interesting/helpful/queer/etc links:
 - [On Coding, Ego, and Attention](https://josebrowne.com/on-coding-ego-and-attention): on self-improvement by not making work personal
 - [On finding the average of two unsigned integers without overflow](https://devblogs.microsoft.com/oldnewthing/20220207-00/?p=106223)
 - [Prioritize Software Features By Mapping Complexity & Value With a Feature Matrix](https://spin.atomicobject.com/2021/01/27/prioritize-software-features/)
+- [What's New Between Java 11 and Java 17](https://mydeveloperplanet.com/2021/09/28/whats-new-between-java-11-and-java-17/)
