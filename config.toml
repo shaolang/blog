@@ -11,3 +11,6 @@ social = {exercism = "https://exercism.io/profiles/shaolang", github = "https://
 
 [taxonomies]
 tag = "tags"
+
+[markup.goldmark.renderer]
+unsafe = true
