@@ -34,6 +34,7 @@ List of interesting/helpful/queer/etc links:
 # Rust
 
 - [A Survey of Rust GUI Libraries (as of 21 Aug 2020)](https://www.boringcactus.com/2020/08/21/survey-of-rust-gui-libraries.html)
+- [Rust Concepts I Wish I Learned Earlier](https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/)
 - [Rust GUI: Introduction, a.k.a. the state of Rust GUI libraries (as of Jan 2021)](https://dev.to/davidedelpapa/rust-gui-introduction-a-k-a-the-state-of-rust-gui-libraries-as-of-january-2021-40gl)
 
 ## SQL
