@@ -6,6 +6,7 @@ List of interesting/helpful/queer/etc links:
 
 ## Artificial Intelligence/Machine Learning
 
+- [Chunking Strategies for LLM Applications](https://www.pinecone.io/learn/chunking-strategies/)
 - [On the Stability of Fine-tuning BERT: Misconceptions, Explanations, and Strong Baselines](https://arxiv.org/abs/2006.04884)
 = [Study notes on parameter-efficient finetuning techniques](https://ljvmiranda921.github.io/notebook/2023/05/01/peft/)
 
