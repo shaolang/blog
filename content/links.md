@@ -7,6 +7,7 @@ List of interesting/helpful/queer/etc links:
 ## Artificial Intelligence/Machine Learning
 
 - [Chunking Strategies for LLM Applications](https://www.pinecone.io/learn/chunking-strategies/)
+- [GPT4All is the Local ChatGPT for your Documents](https://www.kdnuggets.com/2023/06/gpt4all-local-chatgpt-documents-free.html)
 - [On the Stability of Fine-tuning BERT: Misconceptions, Explanations, and Strong Baselines](https://arxiv.org/abs/2006.04884)
 = [Study notes on parameter-efficient finetuning techniques](https://ljvmiranda921.github.io/notebook/2023/05/01/peft/)
 
@@ -39,6 +40,7 @@ List of interesting/helpful/queer/etc links:
 
 # Rust
 
+- [Effective Rust](https://www.lurklurk.org/effective-rust/intro.html)
 - [Rust Concepts I Wish I Learned Earlier](https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/)
 
 ## SQL
