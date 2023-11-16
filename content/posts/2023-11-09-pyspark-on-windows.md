@@ -10,16 +10,17 @@ when you know the supplementary steps and hidden requirements necessary
 to make it work.
 
 As one of the dependencies is [winutils][winutils][^2], the Spark version that
-can run on Windows depends on the maintainer's release of `winutils.exe`.
+can run on Windows depends on the maintainer's release of `winutils.exe`
+and `hadoop.dll`.
 For example, as of 10 Nov 2023, because the latest winutils version is 3.3.5,
 Windows users can only use Spark 3.3.x, i.e., Spark's MAJOR.MINOR version
 must match winutils' MAJOOR.MINOR version.
 
 'Nuff said, the steps to setting up PySpark on Windows are as follows:
 
-1. Download winutils.exe from winutils repo.
+1. Download `winutils.exe` and `hadoop.dll` from winutils repo.
 2. Download Spark that matches winutils' (MAJOR.MINOR) version.
-3. Unzip Spark and copy winutils to Spark's `bin` directory.
+3. Unzip Spark and copy `winutils.exe` and `hadoop.dll` to Spark's `bin` directory.
 3. Set the environment variables `SPARK_HOME` and `HADOOP_HOME` to that Spark
    directory.
 4. Download and unzip [Java Development Kit][jdk] (JDK).
